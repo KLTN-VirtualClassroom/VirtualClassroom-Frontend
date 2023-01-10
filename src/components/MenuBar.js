@@ -8,7 +8,7 @@ function menubar(props) {
       />
 
       <nav className="navbar">
-        <a className="navbar-brand" href="/">
+        <a className="navbar-brand" href="/" onClick = {props.getClickedMain}>
           VirtualClassroom
         </a>
 
