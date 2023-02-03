@@ -11,11 +11,33 @@ const Videocall = (props) => {
     };
     getData();
   },[])
+  const [position, setPosition] = useState({
+    left: "0px",
+    top: "0px",
+    position: "relative",
+    height: "93vh"
+  });
 
-  console.log(name)
+  const handleClick = () => {
+    setPosition({
+      left: "250px",
+      top: "150px",
+      position: "relative",
+      height: "15vh"
+    });
+  };
 
 
-  return <JitsiMeeting
+  return (
+    <>
+
+  {/* <div  style={{
+          left: position.left,
+          top: position.top,
+          position: position.position,
+          height: props.height
+        }}> */}
+  <JitsiMeeting 
     domain = "kltnvirtualclassroom.online"
     // domain = "meet.jit.si"
     roomName = "VirtualClassroom"
@@ -42,8 +64,9 @@ const Videocall = (props) => {
         // you can also store it locally to execute commands
        
     } }
-    getIFrameRef = { (iframeRef) => { iframeRef.style.height = props.height ; } }
-  />
+     getIFrameRef = { (iframeRef) => { iframeRef.style.height = "100%" ; } }
+  /></>
+  )
 };
 
 export default Videocall;

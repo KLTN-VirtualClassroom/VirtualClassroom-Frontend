@@ -1,10 +1,13 @@
+import { useEffect } from "react";
 
-const PDFFile = () => {
+const PDFFile = (props) => {
+
+  console.log("Link: "+ props.linkPdf)
     return (
-        <iframe
-          src="http://localhost:3303/documents/7KPSMNDRYJ28RV5P2N73BWQZKP"
+        <iframe key= {new Date()}
+          src = {props.linkPdf}
           title="pdfframe"
-          height={"700px"}
+          height="100%"
           width="100%"
         ></iframe>
     );

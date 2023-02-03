@@ -9,7 +9,8 @@
 
 .row-container {
     display: flex;
-    flex-direction: row;   
+    flex-direction: row;  
+    height: 93.02vh; 
 }
 
 .row-video-container{
@@ -30,8 +31,15 @@
 
 .col-video-container{
     flex: 1 1 auto;
+    height: 40vh
 }
 
 .col-chat-container{
     flex: 3 0 auto;
+    height: 53vh
+}
+
+.third-container{
+    height: 93vh;
+    width: 100%;
 }

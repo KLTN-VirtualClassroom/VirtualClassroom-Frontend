@@ -8,22 +8,22 @@ function menubar(props) {
       />
 
       <nav className="navbar">
-        <a className="navbar-brand" href="/" onClick = {props.getClickedMain}>
+        <div className="navbar-brand"  onClick = {props.getClickedMain}>
           VirtualClassroom
-        </a>
+        </div>
 
         <div className="navbar-left">
-          <a className="nav-link" href="#/" onClick = {props.getClickedMaterial}>
+          <div className="nav-link"  onClick = {props.getClickedMaterial}>
             Material
-          </a>
-          <a className="nav-link" href="#/" onClick = {props.getClickedWhiteboard}>
+          </div>
+          <div className="nav-link"  onClick = {props.getClickedWhiteboard}>
             Whiteboard
-          </a>
+          </div>
         </div>
 
         <div className="navbar-right">
-          <a className="button1" href="#/">
-            <span className="nav-link">Copy Link</span>
+          <a className="button1" href="#/" onClick = {props.getClickedAllow}>
+            <span className="nav-link" >Copy Link</span>
           </a>
 
           <label className="navbar-toggler" htmlFor="navbar-indicator">

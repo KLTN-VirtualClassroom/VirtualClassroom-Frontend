@@ -19,14 +19,8 @@ const userInfo = {
   role: "teacher",
 };
 
-const video_height = "93vh";
-const video_height_material = "30vh";
-
-const chat_height = "93vh";
-const chat_height_material = "63vh";
-
 const App = () => {
-  const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
+  const [screen, setScreen] = useState("");
   const [role, setRole] = useState(userInfo);
   const [pdfId, setPdfId] = useState("");
   const [linkPdf, setLinkPdf] = useState(
@@ -37,32 +31,19 @@ const App = () => {
   socket.on("pdf", (pdf) => {
     if (pdf.pdfStatus === 1) {
       //setLinkPdf(`http://localhost:3303/documents/${role.role}/${pdf.id}`);
-      console.log(pdf);
-      setScreen({
-        screen: "material",
-        pdfId: pdf.pdfId,
-        linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
-      });
+      setScreen("material");
+      setPdfId(pdf.id);
 
-      console.log("idss1 " + pdfId);
+      console.log("idss1 "+pdfId )
     }
-    if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
+    if (pdf.pdfStatus === 0) setScreen("");
   });
 
   //----------- Socket check if teacher is to material, all other to material too
 
-  socket.on("get-pdf-status", (pdf) => {
-    console.log(pdf)
-    if (pdf.pdfStatus === 1) {
-      console.log("idss2 " + pdf.pdfId);
-
-      setScreen({
-        screen: "material",
-        pdfId: pdf.pdfId,
-        linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
-      });
-      console.log("idss2 " + pdf.pdfId);
-    } else console.log("idss8" + pdf.pdfStatus);
+  socket.on("get-pdf-status", (status) => {
+    if (status === 1) {   
+     setScreen("material");      console.log("idss2 "+pdfId )  }
   });
 
   //-------------- Allow student to annotate pdf file
@@ -74,7 +55,8 @@ const App = () => {
   });
 
   const toMaterial = () => {
-    setScreen({ screen: "material", pdfId: "", linkPdf: "" });
+    setScreen("material");
+    setPdfId("");
     // socket.emit("pdf-status", {
     //   status: 1,
     //   pdfId: "7KPTMJA1RKY55Q7Q72KXNMB288",
@@ -108,18 +90,14 @@ const App = () => {
     socket.emit("pdf-status", {
       status: 1,
       pdfId: pdf.id,
-      socketId: socket.id,
+      socketId: socket.id
     });
-    setScreen({
-      screen: "material",
-      pdfId: pdf.id,
-      linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.id}`,
-    });
+    setPdfId(pdf.id);
     //setLinkPdf(`http://localhost:3303/documents/${role.role}/${pdf.id}`);
   };
 
   useEffect(() => {
-    setScreen({...screen, linkPdf: `http://localhost:3303/documents/${role.role}/${screen.pdfId}`});
+    setLinkPdf(`http://localhost:3303/documents/${role.role}/`);
   }, [role]);
 
   // useEffect(() => {
@@ -128,9 +106,15 @@ const App = () => {
   //   );
   // }, [pdfId]);
 
-  console.log("Link " + linkPdf);
+  const video_height = "93vh";
+  const video_height_material = "30vh";
 
-  if (screen.screen === "") {
+  const chat_height = "93vh";
+  const chat_height_material = "63vh";
+
+  console.log("Link "+linkPdf);
+
+  if (screen === "") {
     return (
       <div>
         <Navbar
@@ -159,7 +143,7 @@ const App = () => {
     );
   }
 
-  if (screen.screen === "material") {
+  if (screen === "material") {
     return (
       <div>
         <Navbar
@@ -184,10 +168,10 @@ const App = () => {
             </div>
           </div>
           <div className="third-container">
-            {screen.pdfId === "" ? (
+            {pdfId === "" ? (
               <ChoosePDF getPdf={getPdf} />
             ) : (
-              <PdfScreen role={userInfo.role} linkPdf={screen.linkPdf} />
+              <PdfScreen role={userInfo.role} linkPdf={linkPdf + pdfId} />
             )}
           </div>
         </div>
@@ -195,7 +179,7 @@ const App = () => {
     );
   }
 
-  if (screen.screen === "whiteboard") {
+  if (screen === "whiteboard") {
     return (
       <div>
         <Navbar

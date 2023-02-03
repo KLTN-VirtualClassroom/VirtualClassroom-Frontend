@@ -29,3 +29,20 @@
     padding : 5px;
     width : 50vh;
 }
+
+/* .chat-confe {
+    overflow: hidden;
+    border: 0;
+    align-self: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+} */
+
+.chat-confe {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}

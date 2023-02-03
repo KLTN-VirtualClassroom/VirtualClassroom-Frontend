@@ -14,8 +14,8 @@
 
 .navbar {
    position: relative;
-
    background: wheat;
+
 }
 
 .navbar-left {
@@ -39,7 +39,7 @@
 .navbar .nav-link {
    color: black;
    text-decoration: none;
-
+   cursor: pointer;
    display: inline-block;
    padding: 15px;
 }
