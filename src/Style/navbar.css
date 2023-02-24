@@ -14,7 +14,7 @@
 
 .navbar {
    position: relative;
-   background: wheat;
+   background: linear-gradient(135deg, #d6d2d2, #d5d0d0);
 
 }
 
@@ -46,26 +46,45 @@
 
 .navbar-brand {
    font-weight: bold;
-
    padding-left: 30px;
    padding-right: 30px;
-
-   background: RoyalBlue;
+   color: black;
 }
 
 .navbar .nav-link:hover {
-   color:#008aff;
+   /* color:#008aff;
+   font-weight: bold; */
+   background-color: #f2f2f2;
+   border: none;
+}
+
+.navbar .nav-link-end {
+   color: white;
+   font-weight: bold;
+   text-decoration: none;
+   cursor: pointer;
+   display: inline-block;
+   padding: 15px;
+   background-color: #f13775;
+   border-radius: 20px;
+   box-sizing: border-box;
+   border: 20px;
+   display: inline-block;
+   height: 10%;
+
+
 }
 
 
-.button1 {
-  background-image: linear-gradient(135deg, #008aff, #1438cb);
+.end-button {
+  background-image: linear-gradient(135deg, #e9cccc, #f13775);
   border-radius: 15px;
   box-sizing: border-box;
   height: 10px;
   font-size: 1.1em;
   padding: 2px;
   z-index: 2;
+  display: inline-block;
   /* display: flex;
   justify-content: center;
 
@@ -82,18 +101,14 @@
   width: 7em;
   z-index: 2; */
 }
-.button1:hover {
-  color: darkblue;
+.end-button:hover {
+  color: black;
 }
 
- .button1 .nav-link{
+ .end-button .end-span-button{
   color: white;
 }
-/*
-.button1:hover .nav-link {
-  background: transparent;
-  
-} */
+
 
 .navbar-collapse,
 .navbar-toggler {

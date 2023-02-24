@@ -1,0 +1,31 @@
+.pdf-title {
+    cursor: pointer;
+    color:blue;
+    font-weight: bold;
+}
+
+.pdf-title:hover{
+    color:#5793f2
+}
+
+.file-list {
+    border-collapse: collapse;
+    width: 80%;
+}
+
+.file-list td, .file-list th {
+    border: 1px solid #6393e0;
+    padding: 8px;
+}
+
+.file-list tr:nth-child(even){background-color: #f2f2f2;}
+
+.file-list tr:hover {background-color: #ddd;}
+
+.file-list th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #6393e0;
+  color: white;
+}

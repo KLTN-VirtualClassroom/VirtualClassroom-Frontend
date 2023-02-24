@@ -4,39 +4,38 @@ import React, { useEffect, useState } from 'react';
 
 const Videocall = (props) => {
   const [name, setName] = useState('');
-  useEffect(()=>{
-    const getData = async () => {
-      const data = await axios.get(`http://localhost:3030/currentInfor`);
-      setName(data.data.username);
-    };
-    getData();
-  },[])
-  const [position, setPosition] = useState({
-    left: "0px",
-    top: "0px",
-    position: "relative",
-    height: "93vh"
-  });
+  // useEffect(()=>{
+  //   const getData = async () => {
+  //     const data = await axios.get(`http://localhost:3030/currentInfor`);
 
-  const handleClick = () => {
-    setPosition({
-      left: "250px",
-      top: "150px",
-      position: "relative",
-      height: "15vh"
-    });
-  };
+  //     const data2 = await axios.get(`http://localhost:3030/user/getList`);
+  //     console.log(data2)
+
+  //     setName(data.data.username);
+  //   };
+  //   getData();
+  // },[])
+
+  // const [position, setPosition] = useState({
+  //   left: "0px",
+  //   top: "0px",
+  //   position: "relative",
+  //   height: "93vh"
+  // });
+
+  // const handleClick = () => {
+  //   setPosition({
+  //     left: "250px",
+  //     top: "150px",
+  //     position: "relative",
+  //     height: "15vh"
+  //   });
+  // };
 
 
   return (
     <>
 
-  {/* <div  style={{
-          left: position.left,
-          top: position.top,
-          position: position.position,
-          height: props.height
-        }}> */}
   <JitsiMeeting 
     domain = "kltnvirtualclassroom.online"
     // domain = "meet.jit.si"
@@ -56,8 +55,8 @@ const Videocall = (props) => {
   
     
     userInfo = {{
-        displayName: name,
-        email: 'hellobagia@gnail.com'
+        displayName: props.name,
+        email: 'null'
     }}
     onApiReady = { (externalApi) => {
         // here you can attach custom event listeners to the Jitsi Meet External API
