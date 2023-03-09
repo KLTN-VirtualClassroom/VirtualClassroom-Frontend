@@ -47,10 +47,7 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await axios.get(`http://localhost:3030/currentInfor`);
-
-      //const data2 = await axios.get(`http://localhost:3030/user/getList`);
-      //console.log(data);
-
+      console.log(data.data)
       setUserInfo(data.data);
       setRole(data.data);
     };
@@ -64,7 +61,9 @@ const App = () => {
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
+        //linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
+        linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
       });
 
       //console.log("idss1 " + pdfId);
@@ -82,10 +81,12 @@ const App = () => {
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
+        //linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
+        linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
       });
       //console.log("idss2 " + pdf.pdfId);
-    } else console.log("idss8" + pdf.pdfStatus);
+    } 
   });
 
   //-------------- Allow student to annotate pdf file
@@ -144,14 +145,18 @@ const App = () => {
     setScreen({
       screen: "material",
       pdfId: pdf.id,
-      linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.id}`,
+      // linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.id}`,
+      linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
     });
   };
 
   useEffect(() => {
     setScreen({
       ...screen,
-      linkPdf: `http://localhost:3303/documents/${role.role}/${screen.pdfId}`,
+      //linkPdf: `http://localhost:3303/documents/${role.role}/${screen.pdfId}`,
+      linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
     });
   }, [role]);
 

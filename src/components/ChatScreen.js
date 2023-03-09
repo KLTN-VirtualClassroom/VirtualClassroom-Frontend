@@ -4,7 +4,10 @@ import "../Style/ChatScreen.css";
 
 const ChatScreen = (props) => {
   const account = props.userInfo;
-  const chatLink = `http://115.78.232.219:3122/channel/${props.userInfo.roomId}?layout=embedded`
+  //const chatLink = `http://115.78.232.219:3122/channel/${props.userInfo.roomId}?layout=embedded`
+  //const chatLink = `http://localhost:3000/channel/${props.userInfo.roomId}?layout=embedded`
+  const chatLink = `http://115.78.232.219:3122/channel/general?layout=embedded`
+
   console.log("Link: "+ chatLink)
   const [authToken, setauthToken] = useState("");
 

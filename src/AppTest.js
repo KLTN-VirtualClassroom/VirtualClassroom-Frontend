@@ -34,7 +34,7 @@ const App = () => {
       setScreen("material");
       setPdfId(pdf.id);
 
-      console.log("idss1 "+pdfId )
+      //console.log("idss1 "+pdfId )
     }
     if (pdf.pdfStatus === 0) setScreen("");
   });

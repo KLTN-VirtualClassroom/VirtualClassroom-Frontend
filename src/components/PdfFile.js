@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 const PDFFile = (props) => {
 
-  //console.log("Link: "+ props.linkPdf)
+  console.log("Link: "+ props.linkPdf)
     return (
         <iframe key= {new Date()}
           src = {props.linkPdf}
