@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import config from '../config/config';
 import "../Style/ChatScreen.css";
 
 const ChatScreen = (props) => {
   const account = props.userInfo;
   //const chatLink = `http://115.78.232.219:3122/channel/${props.userInfo.roomId}?layout=embedded`
   //const chatLink = `http://localhost:3000/channel/${props.userInfo.roomId}?layout=embedded`
-  const chatLink = `http://115.78.232.219:3122/channel/general?layout=embedded`
+  const chatLink = `${config.path.CHAT_PATH}/channel/general?layout=embedded`
 
   console.log("Link: "+ chatLink)
   const [authToken, setauthToken] = useState("");

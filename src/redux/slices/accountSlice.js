@@ -4,7 +4,7 @@ const initialState = {
     username: '',
     password: '',
     role: '',
-    room_id: '',
+    roomId: '',
     status: ''
 };
 
@@ -14,6 +14,7 @@ const accountSlice = createSlice({
   reducers: {
     setAccountInfo: (state, action) => {
       state = action.payload;
+      state.status = "in"
     },
     setAccountStatus: (state, action) => {
       state.status = "out";

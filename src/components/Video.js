@@ -1,9 +1,11 @@
 import { JitsiMeeting } from "@jitsi/react-sdk";
-import axios from "axios";
+import config from '../config/config';
+
 import React, { useEffect, useState } from "react";
 
 const Videocall = (props) => {
   const [name, setName] = useState("");
+  console.log("CONF " + config.path.VIDEO_PATH)
   // useEffect(()=>{
   //   const getData = async () => {
   //     const data = await axios.get(`http://localhost:3030/currentInfor`);
@@ -35,9 +37,9 @@ const Videocall = (props) => {
   return (
     <>
       <JitsiMeeting
-        domain="kltnvirtualclassroom.online:4444"
+        domain = {config.path.VIDEO_PATH}
         // domain = "meet.jit.si"
-        roomName="VirtualClassroomOij"
+        roomName="VirtualClassroom"
         configOverwrite={{
           startWithAudioMuted: true,
           disableModeratorIndicator: true,
