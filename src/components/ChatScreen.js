@@ -8,7 +8,7 @@ const ChatScreen = (props) => {
   //const chatLink = `http://localhost:3000/channel/${props.userInfo.roomId}?layout=embedded`
   const chatLink = `${config.path.CHAT_PATH}/channel/general?layout=embedded`
 
-  console.log("Link: "+ chatLink)
+  //console.log("Link: "+ chatLink)
   const [authToken, setauthToken] = useState("");
 
   const [position, setPosition] = useState({

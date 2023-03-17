@@ -63,8 +63,6 @@ const Meeting = () => {
         //linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
       });
-
-      //console.log("idss1 " + pdfId);
     }
     if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
   });
@@ -82,7 +80,6 @@ const Meeting = () => {
         //linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
       });
-      //console.log("idss2 " + pdf.pdfId);
     }
   });
 

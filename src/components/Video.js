@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 const Videocall = (props) => {
   const [name, setName] = useState("");
-  console.log("CONF " + config.path.VIDEO_PATH)
+  //console.log("CONF " + config.path.VIDEO_PATH)
   // useEffect(()=>{
   //   const getData = async () => {
   //     const data = await axios.get(`http://localhost:3030/currentInfor`);

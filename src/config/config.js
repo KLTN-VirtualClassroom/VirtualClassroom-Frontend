@@ -6,6 +6,9 @@ const config = {
     CHAT_PATH: process.env.REACT_APP_CHAT_PATH,
     VIDEO_PATH: process.env.REACT_APP_VIDEO_PATH,
   },
+  auth: {
+    CHAT_PASS: process.env.CHAT_PASS
+  }
 };
 
 export default config;
