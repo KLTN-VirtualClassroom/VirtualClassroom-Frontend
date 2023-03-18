@@ -157,7 +157,7 @@ const Meeting = () => {
 
   if (screen.screen === "") {
     return (
-      <div>
+      <div className="container">
         <Navbar
           getClickedMaterial={toMaterial}
           getClickedWhiteboard={toWhiteboard}

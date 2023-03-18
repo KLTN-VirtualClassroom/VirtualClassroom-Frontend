@@ -20,15 +20,12 @@
 
 .navbar-left {
    display: inline-block;
-
    margin-left: 15px;
 }
 
 .navbar-right {
    display: inline-block;
-
    margin-right: 15px;
-
    position: absolute;
    top: 0;
    right: 0;
@@ -41,7 +38,7 @@
    text-decoration: none;
    cursor: pointer;
    display: inline-block;
-   padding: 15px;
+   padding: 16px;
 }
 
 .navbar-brand {
@@ -64,7 +61,7 @@
    text-decoration: none;
    cursor: pointer;
    display: inline-block;
-   padding: 15px;
+   padding: 16px;
    background-color: #f13775;
    border-radius: 20px;
    box-sizing: border-box;
@@ -75,39 +72,6 @@
 
 }
 
-
-.end-button {
-  background-image: linear-gradient(135deg, #e9cccc, #f13775);
-  border-radius: 15px;
-  box-sizing: border-box;
-  height: 10px;
-  font-size: 1.1em;
-  padding: 2px;
-  z-index: 2;
-  display: inline-block;
-  /* display: flex;
-  justify-content: center;
-
-  border-radius: 6px;
-  box-sizing: border-box;
-  color: #ffffff;
-  display: block;
-  height: 40px;
-  font-size: 1.4em;
-  font-weight: 600;
-  padding: 4px;
-  position: relative;
-  text-decoration: none;
-  width: 7em;
-  z-index: 2; */
-}
-.end-button:hover {
-  color: black;
-}
-
- .end-button .end-span-button{
-  color: white;
-}
 
 
 .navbar-collapse,
