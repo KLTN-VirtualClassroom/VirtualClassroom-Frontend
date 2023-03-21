@@ -59,17 +59,14 @@ const ChoosePDF = (props) => {
   const handleSubmission = () => {
     const formData = new FormData();
     formData.append("File", selectedFile);
-    console.log(selectedFile)
+    console.log(formData)
     //axios.post('http://localhost:3030/uploadPdf', formData)
     axios
     //.post("http://localhost:3000/api/v1/login", currentAccount)
-    .post("http://localhost:5000/api/documents", {
-      selectedFile
-    }, {
+    .post("http://115.78.232.219:5012/api/documents", formData , {
       headers:{
         'Content-Type': "application/pdf",
         'Authorization': "Token token=\"secret\"", 
-       
       }
     })
     .then(function (response) {
