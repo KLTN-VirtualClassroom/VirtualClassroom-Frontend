@@ -4,7 +4,7 @@ import Navbar from "../components/MenuBar";
 import ChatScreen from "../components/ChatScreen";
 import PdfScreen from "../components/PdfFile";
 import WhiteboardScreen from "../components/WhiteboardScreen";
-import ChoosePDF from "../components/ChoosePDF";
+import ChoosePDF from "../components/ChoosePDF/index.js";
 import config from "../config/config"
 import io from "socket.io-client";
 import axios from "axios";
