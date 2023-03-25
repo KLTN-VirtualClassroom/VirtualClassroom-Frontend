@@ -1,5 +1,6 @@
 import * as React from "react"
 import { styled } from "@mui/material/styles"
+import { memo } from "react"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell, { tableCellClasses } from "@mui/material/TableCell"
@@ -30,43 +31,25 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 
-const pdfFile = [
-    {
-      name: "Big Buck Video",
-      id: "7KPSMR7YD0F606X6T66WYGFCXE",
-    },
-  
-    {
-      name: "Getting start",
-      id: "7KPTR03RN434FAF6AE3GD5X7EA",
-    },
-  
-    {
-      name: "Something not English",
-      id: "7M8B6WCQMXK0VJZF4BCFQVK6HS",
-    },
-  
-    {
-      name: "Mindset level 3",
-      id: "7KPTSQ54B022GNFT436WN81AW6",
-    },
-  
-    {
-      name: "SD Interview",
-      id: "7KPSE1HHHH16KGV2ZM6WQHP6D1",
-    }
-  ];
 
-export default function materialList(props) {
+
+const materialList = (props) => {
+  let pdfFile = props.pdfFile
+
+  if(props.topic){
+    pdfFile = pdfFile.filter(function (pdf) {return pdf.topic === props.topic})
+    console.log(pdfFile)
+
+  }
   return (
     <TableContainer component={Paper} sx={{maxHeight: 500}}>
       <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>File name</StyledTableCell>
-            <StyledTableCell>Calories</StyledTableCell>
-            <StyledTableCell>Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell>Carbs&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Dates</StyledTableCell>
+            <StyledTableCell>Page Previous&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Last Access&nbsp;(g)</StyledTableCell>
             <StyledTableCell>&nbsp;</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -87,3 +70,4 @@ export default function materialList(props) {
     </TableContainer>
   )
 }
+export default memo(materialList)

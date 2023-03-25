@@ -6,48 +6,53 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { Button, CardActionArea, CardActions, Typography } from "@mui/material";
+import { CardActionArea, Typography } from "@mui/material";
+import MaterialList from "./materialList";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const MaterialTopic = (props) => {
+  const [topic, setTopic] = React.useState(null);
+  const openTopic = (choosenTopic) => {
+    console.log(choosenTopic);
+    setTopic(choosenTopic.title);
+  };
 
-export default function ResponsiveGrid() {
   return (
     <Box sx={{ flexGrow: 1, height: 550 }}>
-      <Grid
-        container
-        sx = {{height: 550, overflow: "auto"}}
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        {itemData.map((row, index) => (
-          <Grid item xs={2} sm={4} md={4} key={index}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={row.img}
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom component="div">
-                    {row.title}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      {topic ? (
+        <MaterialList getPdf={props.getPdf} pdfFile={props.pdfFile} topic = {topic} />
+      ) : (
+        <Grid
+          container
+          sx={{ height: 550, overflow: "auto" }}
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          {itemData.map((row, index) => (
+            <Grid item xs={2} sm={4} md={4} key={index}>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardActionArea onClick={() => openTopic(row)}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={row.img}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom component="div">
+                      {row.title}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 }
+
+export default React.memo(MaterialTopic)
 
 const itemData = [
   {

@@ -5,7 +5,7 @@ import ChatScreen from "../components/ChatScreen";
 import PdfScreen from "../components/PdfFile";
 import WhiteboardScreen from "../components/WhiteboardScreen";
 import ChoosePDF from "../components/ChoosePDF/index.js";
-import config from "../config/config"
+import config from "../config/config";
 import io from "socket.io-client";
 import axios from "axios";
 import { memo } from "react";
@@ -44,8 +44,17 @@ const Meeting = () => {
     const getData = async () => {
       const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
       console.log(data.data);
-
-      const accountInfor = data.data;
+      let accountInfor = {};
+      if(data.data)
+         accountInfor = data.data;
+      else
+         accountInfor = {
+          username: "nghianguyen",
+          password: "123456",
+          role: "teacher",
+          roomId: "general",
+          id: "TC001",
+        };
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
@@ -92,7 +101,7 @@ const Meeting = () => {
         setRole((prev) => {
           return { ...prev, role: setting.role };
         });
-        dispatch(setAccountRole(setting.role))
+        dispatch(setAccountRole(setting.role));
       }
     }
   });
