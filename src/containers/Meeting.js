@@ -45,7 +45,7 @@ const Meeting = () => {
       const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
       console.log(data.data);
       let accountInfor = {};
-      if(data.data)
+      if(data.data.username !== "")
          accountInfor = data.data;
       else
          accountInfor = {
@@ -55,6 +55,7 @@ const Meeting = () => {
           roomId: "general",
           id: "TC001",
         };
+        console.log(data)
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
