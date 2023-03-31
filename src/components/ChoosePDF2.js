@@ -68,7 +68,6 @@ const ChoosePDF = (props) => {
   //   }
   // }).then(function(response){console.log("XOA THANH CONG")})
     axios
-    //.post("http://localhost:3000/api/v1/login", currentAccount)
     .post("https://bangtrang.click/api/documents", selectedFile , {
       headers:{
         'Content-Type': "application/pdf",

@@ -48,21 +48,21 @@ const materialList = (props) => {
           <TableRow>
             <StyledTableCell>File name</StyledTableCell>
             <StyledTableCell>Dates</StyledTableCell>
-            <StyledTableCell>Page Previous&nbsp;(g)</StyledTableCell>
-            <StyledTableCell>Last Access&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Page Previous</StyledTableCell>
+            <StyledTableCell>Last Access</StyledTableCell>
             <StyledTableCell>&nbsp;</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {pdfFile.map(row => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow key={row.fileName}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {row.fileName}
               </StyledTableCell>
               <StyledTableCell ></StyledTableCell>
               <StyledTableCell ></StyledTableCell>
               <StyledTableCell ></StyledTableCell>
-              <StyledTableCell ><Button variant="contained" onClick={()=>props.getPdf(row)}> Select</Button></StyledTableCell>
+              <StyledTableCell ><Button variant="contained" onClick={()=>props.getPdf({id:row.fileId})}> Select</Button></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

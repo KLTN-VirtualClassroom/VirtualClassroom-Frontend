@@ -1,6 +1,6 @@
 import * as React from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import {Box, Button} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -8,18 +8,32 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea, Typography } from "@mui/material";
 import MaterialList from "./materialList";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const MaterialTopic = (props) => {
   const [topic, setTopic] = React.useState(null);
+
   const openTopic = (choosenTopic) => {
-    console.log(choosenTopic);
     setTopic(choosenTopic.title);
   };
+
+  const backTopic = () => {
+    setTopic(null)
+  }
 
   return (
     <Box sx={{ flexGrow: 1, height: 550 }}>
       {topic ? (
-        <MaterialList getPdf={props.getPdf} pdfFile={props.pdfFile} topic = {topic} />
+        <>
+          <Button variant="contained" startIcon={<ArrowBackIcon />} sx={{ my: 3, background: "#308ee6" }} onClick={backTopic}>
+            Back
+          </Button>
+          <MaterialList
+            getPdf={props.getPdf}
+            pdfFile={props.pdfFile}
+            topic={topic}
+          />
+        </>
       ) : (
         <Grid
           container
@@ -35,7 +49,7 @@ const MaterialTopic = (props) => {
                     component="img"
                     height="140"
                     image={row.img}
-                    alt="green iguana"
+                    alt="topic image"
                   />
                   <CardContent>
                     <Typography gutterBottom component="div">
@@ -50,18 +64,15 @@ const MaterialTopic = (props) => {
       )}
     </Box>
   );
-}
+};
 
-export default React.memo(MaterialTopic)
+export default React.memo(MaterialTopic);
 
 const itemData = [
   {
     img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
     title: "Breakfast",
     author: "@bkristastucchio",
-    rows: 2,
-    cols: 2,
-    featured: true,
   },
   {
     img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
@@ -77,21 +88,16 @@ const itemData = [
     img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
     title: "Coffee",
     author: "@nolanissac",
-    cols: 2,
   },
   {
     img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
     title: "Hats",
     author: "@hjrc33",
-    cols: 2,
   },
   {
     img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
     title: "Honey",
     author: "@arwinneil",
-    rows: 2,
-    cols: 2,
-    featured: true,
   },
   {
     img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
@@ -107,8 +113,6 @@ const itemData = [
     img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
     title: "Mushrooms",
     author: "@silverdalex",
-    rows: 2,
-    cols: 2,
   },
   {
     img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
@@ -124,6 +128,5 @@ const itemData = [
     img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
     title: "Bike",
     author: "@southside_customs",
-    cols: 2,
   },
 ];

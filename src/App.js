@@ -40,10 +40,6 @@ const App = () => {
 
   const [role, setRole] = useState(userInfo);
 
-  // const [pdfId, setPdfId] = useState("");
-  // const [linkPdf, setLinkPdf] = useState(
-  //   `http://localhost:3303/documents/${role.role}/`
-  // );
 
   useEffect(() => {
     const getData = async () => {
@@ -58,16 +54,12 @@ const App = () => {
   //----------- Socket for first access to room whether the teacher is on material view
   socket.on("pdf", (pdf) => {
     if (pdf.pdfStatus === 1) {
-      //console.log(pdf);
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        //linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
         linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
 
       });
-
-      //console.log("idss1 " + pdfId);
     }
     if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
   });
@@ -75,26 +67,19 @@ const App = () => {
   //----------- Socket check if teacher is to material, all other to material too
 
   socket.on("get-pdf-status", (pdf) => {
-    //console.log(pdf);
     if (pdf.pdfStatus === 1) {
-      //console.log("idss2 " + pdf.pdfId);
-
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        //linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.pdfId}`,
         linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
 
       });
-      //console.log("idss2 " + pdf.pdfId);
     } 
   });
 
   //-------------- Allow student to annotate pdf file
   socket.on("set-role", (setting) => {
     if(role.role !== ""){
-      //console.log("Current: "+ userInfo.role)
-
     if (role.role !== "teacher")
       setRole((prev) => {
         return { ...prev, role: setting.role };
@@ -119,7 +104,6 @@ const App = () => {
   };
 
   const setAllow = (checked) => {
-    //console.log("SENDED" + userInfo.role);
     if (userInfo.role === "teacher") {
       if (checked) {
         socket.emit("allowance", {
@@ -137,7 +121,6 @@ const App = () => {
   };
 
   const getPdf = (pdf) => {
-    //console.log(pdf);
     socket.emit("pdf-status", {
       status: 1,
       pdfId: pdf.id,
@@ -160,8 +143,6 @@ const App = () => {
 
     });
   }, [role]);
-
-  //console.log("Link " + linkPdf);
 
   if (screen.screen === "") {
     return (
