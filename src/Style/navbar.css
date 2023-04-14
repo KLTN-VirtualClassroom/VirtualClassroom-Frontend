@@ -13,22 +13,32 @@
  */
 
 .navbar {
-   position: relative;
+   /* position: relative; */
+   display: flex;
+   flex-direction: row;
+   align-content: spac;
+   justify-content: space-between;
    background: linear-gradient(135deg, #d6d2d2, #d5d0d0);
 
 }
 
 .navbar-left {
-   display: inline-block;
-   margin-left: 15px;
+   /* display: inline-block;
+   margin-left: 15px; */
+   display: flex;
+   flex-direction: row;
+   /* margin-left: 15px; */
 }
 
 .navbar-right {
-   display: inline-block;
+   /* display: inline-block;
    margin-right: 15px;
    position: absolute;
    top: 0;
-   right: 0;
+   right: 0; */
+   display: flex;
+   flex-direction: row;
+   align-items: center;
 }
 
 
@@ -38,12 +48,26 @@
    text-decoration: none;
    cursor: pointer;
    display: inline-block;
-   padding: 16px;
+   padding: 1rem;
 }
 
 .navbar-brand {
    font-weight: bold;
    padding-left: 30px;
+   padding-right: 30px;
+   color: black;
+}
+
+.navbar-record {
+   display: flex;
+   flex-direction: row;
+   /* flex-wrap: wrap; */
+   align-items: center;
+   text-decoration: none;
+   /* cursor: pointer; */
+   /* padding: 13px; */
+   /* font-weight: bold; */
+   /* padding-left: 30px; */
    padding-right: 30px;
    color: black;
 }
@@ -54,7 +78,7 @@
    background-color: #f2f2f2;
    border: none;
 }
-
+/* 
 .navbar .nav-link-end {
    color: white;
    font-weight: bold;
@@ -68,8 +92,16 @@
    border: 20px;
    display: inline-block;
    height: 10%;
+} */
 
 
+.navbar .nav-link-end {
+   color: red;
+   font-weight: bold;
+   text-decoration: none;
+   cursor: pointer;
+   display: inline-block;
+   padding: 16px;
 }
 
 
@@ -84,19 +116,28 @@
  */
 
 @media (max-width: 842px) {
-   .navbar-right,
+   /* .navbar-right, */
    .navbar-left {
       display: block;
-
-      border-top: 1px solid DimGray;
+      border-bottom: 1px solid DimGray;
    }
 
-   .navbar-right {
+   /* .navbar-right  {
       position: static;
-   }
+   } */
+
+   /* .navbar-right {
+      display:flex;
+      flex-direction: row;
+      margin-right: 15px;
+      position: static;
+      top: 0;
+      right: 0;
+   } */
 
    .navbar .nav-link {
       display: block;
+      margin-left: 2rem;
    }
 
    .navbar-collapse:checked + .navbar {
@@ -104,18 +145,98 @@
       overflow: hidden;
    }
 
+   
    .navbar-toggler {
-      color: White;
-
+      color: black;
+      font-weight: bold;
       display: inline-block;
       padding: 15px 25px;
-
       position: absolute;
       top: 0;
       right: 0;
-
-      border-left: 1px solid DimGray;
-
       cursor: pointer;
    }
 } 
+
+
+.blob {
+   background: black;
+   border-radius: 50%;
+   box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+   margin-right: 10px;
+   height: 10px;
+   width: 10px;
+   transform: scale(1);
+   animation: pulse-black 2s infinite;
+ }
+
+.blob.red {
+   background: rgba(255, 82, 82, 1);
+   box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+   animation: pulse-red 2s infinite;
+ }
+ 
+ @keyframes pulse-red {
+   0% {
+     transform: scale(0.95);
+     box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+   }
+   
+   70% {
+     transform: scale(1);
+     box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+   }
+   
+   100% {
+     transform: scale(0.95);
+     box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+   }
+ }
+
+ .blob.orange {
+   background: rgba(255, 121, 63, 1);
+   box-shadow: 0 0 0 0 rgba(255, 121, 63, 1);
+   animation: pulse-orange 2s infinite;
+ }
+ 
+ @keyframes pulse-orange {
+   0% {
+     transform: scale(0.95);
+     box-shadow: 0 0 0 0 rgba(255, 121, 63, 0.7);
+   }
+   
+   70% {
+     transform: scale(1);
+     box-shadow: 0 0 0 10px rgba(255, 121, 63, 0);
+   }
+   
+   100% {
+     transform: scale(0.95);
+     box-shadow: 0 0 0 0 rgba(255, 121, 63, 0);
+   }
+ }
+ 
+
+ @-webkit-keyframes SHOW-BOX {
+   0%   { opacity: 0; }
+   100% { opacity: 1; }
+}
+@-moz-keyframes SHOW-BOX {
+   0%   { opacity: 0; }
+   100% { opacity: 1; }
+}
+@-o-keyframes SHOW-BOX {
+   0%   { opacity: 0; }
+   100% { opacity: 1; }
+}
+@keyframes SHOW-BOX {
+   0%   { opacity: 0; }
+   100% { opacity: 1; }
+}
+
+.navbar-animate {
+   -webkit-animation: SHOW-BOX 1s ease;
+   -moz-animation: SHOW-BOX 1s ease;
+   -o-animation: SHOW-BOX 1s ease;
+   animation: SHOW-BOX 1s ease;
+}

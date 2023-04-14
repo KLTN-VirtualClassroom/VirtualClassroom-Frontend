@@ -7,7 +7,8 @@ const config = {
     VIDEO_PATH: process.env.REACT_APP_VIDEO_PATH,
   },
   auth: {
-    CHAT_PASS: process.env.CHAT_PASS
+    CHAT_PASS: process.env.CHAT_PASS,
+    VIDEO_PASS: process.env.VIDEO_PASS
   }
 };
 
