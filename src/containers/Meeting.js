@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import VideoMeet from "../components/Video";
 import Navbar from "../components/MenuBar";
 import ChatScreen from "../components/ChatScreen";
@@ -14,8 +14,6 @@ import {
   setAccountStatus,
   setAccountRole,
 } from "../redux/slices/accountSlice.js";
-
-
 
 import "../Style/App.css";
 import { useDispatch } from "react-redux";
@@ -42,64 +40,79 @@ const Meeting = () => {
 
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     const getData = async () => {
       const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
       let accountInfor = {};
-      if(data.data.username !== "")
-         accountInfor = data.data;
+      if (data.data.username !== "") accountInfor = data.data;
       else
-         accountInfor = {
+        accountInfor = {
           username: "nghiaguyen",
           password: "123456",
           role: "teacher",
           roomId: "English01",
           id: "TC001",
         };
-        console.log(accountInfor)
+      //(accountInfor);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
     };
     getData();
-  }, []); 
+  }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
   socket.on("pdf", (pdf) => {
     if (pdf.pdfStatus === 1) {
+      //console.log("Link111 " + pdf.pdfId);
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
       });
     }
     if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
   });
 
-  //----------- Socket check if teacher is to material, all other to material too
+  useEffect(() => {
+    // socket?.on("pdf", (pdf) => {
+    //   if (pdf.pdfStatus === 1) {
+    //     console.log("Link111 "+ pdf.pdfId)
+    //     setScreen({
+    //       screen: "material",
+    //       pdfId: pdf.pdfId,
+    //       linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
+    //     });
+    //   }
+    //   if (pdf.pdfStatus === 0)
+    //     setScreen({ screen: "", linkPdf: "", pdfId: "" });
+    // });
 
-  socket.on("get-pdf-status", (pdf) => {
-    if (pdf.pdfStatus === 1) {
+    //----------- Socket check if teacher is to material, all other to material too
 
-      setScreen({
-        screen: "material",
-        pdfId: pdf.pdfId,
-        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
-      });
-    }
-  });
-
-  //-------------- Allow student to annotate pdf file
-  socket.on("set-role", (setting) => {
-    if (role.role !== "") {
-      if (role.role !== "teacher") {
-        setRole((prev) => {
-          return { ...prev, role: setting.role };
+    socket?.on("get-pdf-status", (pdf) => {
+      if (pdf.pdfStatus === 1) {
+        setScreen({
+          screen: "material",
+          pdfId: pdf.pdfId,
+          linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
         });
-        dispatch(setAccountRole(setting.role));
       }
-    }
-  });
+    });
+
+    //-------------- Allow student to annotate pdf file
+    socket?.on("set-role", (setting) => {
+      if (role.role !== "") {
+        if (role.role !== "teacher") {
+          setRole((prev) => {
+            return { ...prev, role: setting.role };
+          });
+          dispatch(setAccountRole(setting.role));
+        }
+      }
+    });
+  }, [socket]);
 
   const toMaterial = () => {
     setScreen({ screen: "material", pdfId: "", linkPdf: "" });
@@ -111,7 +124,7 @@ const Meeting = () => {
 
   const toMain = () => {
     setScreen({ screen: "", pdfId: "", linkPdf: "" });
-    socket.emit("pdf-status", {
+    socket?.emit("pdf-status", {
       status: 0,
       pdfId: "",
     });
@@ -120,7 +133,7 @@ const Meeting = () => {
   const setAllow = (checked) => {
     if (userInfo.role === "teacher") {
       if (checked) {
-        socket.emit("allowance", {
+        socket?.emit("allowance", {
           socketId: socket.id,
           role: "student-allow-edit",
         });
@@ -134,16 +147,17 @@ const Meeting = () => {
   };
 
   const getPdf = (pdf) => {
-    socket.emit("pdf-status", {
+    socket?.emit("pdf-status", {
       status: 1,
       pdfId: pdf.id,
       socketId: socket.id,
     });
+    //console.log("Link222 " + pdf.pdfId);
     setScreen({
       screen: "material",
       pdfId: pdf.id,
       // linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.id}`,
-      linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+      linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.id}`,
     });
   };
 
