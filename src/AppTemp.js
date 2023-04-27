@@ -1,26 +1,25 @@
-import React, { useEffect, useState, useMemo } from "react";
-import VideoMeet from "../components/Video";
-import Navbar from "../components/MenuBar";
-import ChatScreen from "../components/ChatScreen";
-import PdfScreen from "../components/PdfFile";
-import WhiteboardScreen from "../components/WhiteboardScreen";
-import ChoosePDF from "../components/ChoosePDF/index.js";
-import config from "../config/config";
+import React, { useEffect, useState } from "react";
+import VideoMeet from "./components/Video";
+import Navbar from "./components/MenuBar";
+import ChatScreen from "./components/ChatScreen";
+import PdfScreen from "./components/PdfFile";
+import WhiteboardScreen from "./components/WhiteboardScreen";
+import ChoosePDF from "./components/ChoosePDF";
 import io from "socket.io-client";
 import axios from "axios";
-import { memo } from "react";
-import {
-  setAccountInfo,
-  setAccountStatus,
-  setAccountRole,
-} from "../redux/slices/accountSlice.js";
+import { Resizable } from "react-resizable";
 
+import "./Style/App.css";
 
+const socket = io("http://localhost:3030");
 
-import "../Style/App.css";
-import { useDispatch } from "react-redux";
-
-const socket = io(config.path.SERVER_PATH);
+const userInfo2 = {
+  username: "",
+  password: "",
+  email: "",
+  role: "",
+  roomId: "",
+};
 
 const video_height = "93vh";
 const video_height_material = "30vh";
@@ -28,41 +27,29 @@ const video_height_material = "30vh";
 const chat_height = "93vh";
 const chat_height_material = "63vh";
 
-const Meeting = () => {
+const App = () => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
     email: "",
     role: "",
     roomId: "",
-    id: "",
+    id: ""
   });
   const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
+
   const [role, setRole] = useState(userInfo);
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const getData = async () => {
-      const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
-      let accountInfor = {};
-      if(data.data.username !== "")
-         accountInfor = data.data;
-      else
-         accountInfor = {
-          username: "nghiaguyen",
-          password: "123456",
-          role: "teacher",
-          roomId: "English01",
-          id: "TC001",
-        };
-        console.log(accountInfor)
-      dispatch(setAccountInfo(accountInfor));
-      setUserInfo(accountInfor);
-      setRole(accountInfor);
+      const data = await axios.get(`http://localhost:3030/currentInfor`);
+      console.log(data.data)
+      setUserInfo(data.data);
+      setRole(data.data);
     };
     getData();
-  }, []); 
+  }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
   socket.on("pdf", (pdf) => {
@@ -70,7 +57,8 @@ const Meeting = () => {
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+        linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
       });
     }
     if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
@@ -80,24 +68,22 @@ const Meeting = () => {
 
   socket.on("get-pdf-status", (pdf) => {
     if (pdf.pdfStatus === 1) {
-
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+        linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
       });
-    }
+    } 
   });
 
   //-------------- Allow student to annotate pdf file
   socket.on("set-role", (setting) => {
-    if (role.role !== "") {
-      if (role.role !== "teacher") {
-        setRole((prev) => {
-          return { ...prev, role: setting.role };
-        });
-        dispatch(setAccountRole(setting.role));
-      }
+    if(role.role !== ""){
+    if (role.role !== "teacher")
+      setRole((prev) => {
+        return { ...prev, role: setting.role };
+      });
     }
   });
 
@@ -124,7 +110,8 @@ const Meeting = () => {
           socketId: socket.id,
           role: "student-allow-edit",
         });
-      } else {
+      }
+      else{
         socket.emit("allowance", {
           socketId: socket.id,
           role: "student",
@@ -143,7 +130,8 @@ const Meeting = () => {
       screen: "material",
       pdfId: pdf.id,
       // linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.id}`,
-      linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+      linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
     });
   };
 
@@ -151,13 +139,14 @@ const Meeting = () => {
     setScreen({
       ...screen,
       //linkPdf: `http://localhost:3303/documents/${role.role}/${screen.pdfId}`,
-      linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+      linkPdf: `http://18.139.222.211/documents/${role.role}/${screen.pdfId}`,
+
     });
   }, [role]);
 
   if (screen.screen === "") {
     return (
-      <div className="container">
+      <div>
         <Navbar
           getClickedMaterial={toMaterial}
           getClickedWhiteboard={toWhiteboard}
@@ -214,7 +203,7 @@ const Meeting = () => {
           </div>
           <div className="third-container">
             {screen.pdfId === "" ? (
-              <ChoosePDF getPdf={getPdf} userInfo={userInfo} />
+              <ChoosePDF getPdf={getPdf} />
             ) : (
               <PdfScreen role={userInfo.role} linkPdf={screen.linkPdf} />
             )}
@@ -258,4 +247,4 @@ const Meeting = () => {
   }
 };
 
-export default memo(Meeting);
+export default App;

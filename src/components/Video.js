@@ -2,6 +2,8 @@ import { JitsiMeeting } from "@jitsi/react-sdk";
 import config from '../config/config';
 
 import React, { useEffect, useState } from "react";
+import { memo } from "react";
+
 
 const Videocall = (props) => {
   const [name, setName] = useState("");
@@ -79,4 +81,4 @@ const Videocall = (props) => {
   );
 };
 
-export default Videocall;
+export default memo(Videocall);

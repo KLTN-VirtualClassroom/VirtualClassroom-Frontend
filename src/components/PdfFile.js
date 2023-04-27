@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { memo } from "react";
+
 
 const PDFFile = (props) => {
 
@@ -13,4 +15,4 @@ const PDFFile = (props) => {
     );
 }
 
-export default PDFFile;
+export default memo(PDFFile);

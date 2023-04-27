@@ -9,6 +9,7 @@ import StopIcon from "@mui/icons-material/Stop";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { styled } from "@mui/system";
 import { IconButton, Button } from "@mui/material";
+import {memo} from "react"
 
 const StyledPlayIcon = styled(PlayArrowIcon, {
   name: "StyledPlayIcon",
@@ -124,7 +125,7 @@ function MenuBar(props) {
                       onChange={(checked) => props.getClickedAllow(checked)}
                     ></Switch>
                   </div>
-                  {recordStatus === "recording" ? (
+                  {/* {recordStatus === "recording" ? (
                     <div className="nav-link">
                       <div className="navbar-record">
                         <Typography className="blob red" />
@@ -174,7 +175,7 @@ function MenuBar(props) {
                         </div>
                       )}
                     </div>
-                  )}
+                  )} */}
 
                   {screenWidth <= 842 && (
                     <div
@@ -205,7 +206,7 @@ function MenuBar(props) {
                       onChange={(checked) => props.getClickedAllow(checked)}
                     ></Switch>
                   </div>
-
+{/* 
                   {recordStatus === "recording" ? (
                     <div className="nav-link">
                       <div className="navbar-record">
@@ -261,7 +262,7 @@ function MenuBar(props) {
                     >
                       End Meeting
                     </div>
-                  )}
+                  )} */}
                 </div>
               )}
             </>
@@ -347,4 +348,4 @@ function MenuBar(props) {
   );
 }
 
-export default MenuBar;
+export default memo(MenuBar);
