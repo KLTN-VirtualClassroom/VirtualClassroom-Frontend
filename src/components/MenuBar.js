@@ -72,9 +72,18 @@ function MenuBar(props) {
     //setRecordStatus(null);
   };
 
+
+  const EndMeeting = () => {
+    sessionStorage.clear();
+    window.location.replace('http://localhost:3001');
+  }
+
   const toogleClicked = () => {
     setToogleMenu(!toogleMenu);
   };
+
+
+
   useEffect(() => {
     if (mediaBlobUrl !== undefined) stopRecord();
   }, [mediaBlobUrl]);
@@ -181,7 +190,7 @@ function MenuBar(props) {
                     <div
                       className="nav-link"
                       style={{ color: "red" }}
-                      onClick="history.back()"
+                      onClick={EndMeeting}
                     >
                       End Meeting
                     </div>
@@ -331,6 +340,7 @@ function MenuBar(props) {
                 fontWeight: "bold",
                 "&:hover": { backgroundColor: "#f2f2f2" },
               }}
+              onClick={EndMeeting}
             >
               END MEETING
             </Button>

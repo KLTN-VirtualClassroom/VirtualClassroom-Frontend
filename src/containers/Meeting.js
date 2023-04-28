@@ -53,7 +53,7 @@ const Meeting = () => {
           role: "teacher",
           roomId: "English01",
           id: "TC001",
-        };
+      };
       //(accountInfor);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
