@@ -18,7 +18,8 @@ import {
 import "../Style/App.css";
 import { useDispatch } from "react-redux";
 
-const socket = io(config.path.SERVER_PATH);
+const socket = io(config.path.SOCKET_PATH);
+// const socket = io("http://localhost:3131");
 
 const video_height = "93vh";
 const video_height_material = "30vh";
