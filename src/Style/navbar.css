@@ -45,6 +45,7 @@
 .navbar-brand,
 .navbar .nav-link {
    color: black;
+   font-size: 1rem;
    text-decoration: none;
    cursor: pointer;
    display: inline-block;
