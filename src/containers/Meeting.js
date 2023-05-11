@@ -41,21 +41,14 @@ const Meeting = () => {
 
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     const getData = async () => {
       const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
       let accountInfor = {};
       if (data.data.username !== "") accountInfor = data.data;
-      else
-        accountInfor = {
-          username: "nghiaguyen",
-          password: "123456",
-          role: "teacher",
-          roomId: "English01",
-          id: "TC001",
-      };
-      //(accountInfor);
+
+      socket?.emit("get-room-info", { room: accountInfor.roomId });
+      console.log(accountInfor);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
@@ -64,34 +57,33 @@ const Meeting = () => {
   }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
-  socket.on("pdf", (pdf) => {
-    if (pdf.pdfStatus === 1) {
-      //console.log("Link111 " + pdf.pdfId);
-      setScreen({
-        screen: "material",
-        pdfId: pdf.pdfId,
-        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
-      });
+  if (userInfo.roomId !== "") {
+    socket.on("pdf", (pdf) => {
+      if (pdf.pdfStatus === 1) {
+        setScreen({
+          screen: "material",
+          pdfId: pdf.pdfId,
+          linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
+        });
+      }
+      if (pdf.pdfStatus === 0)
+        setScreen({ screen: "", linkPdf: "", pdfId: "" });
+    });
+  }
+
+  socket?.on("set-role", (setting) => {
+    if (role.role !== "") {
+      if (role.role !== "teacher") {
+        console.log(setting.role);
+        setRole((prev) => {
+          return { ...prev, role: setting.role };
+        });
+        dispatch(setAccountRole(setting.role));
+      }
     }
-    if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
   });
 
   useEffect(() => {
-    // socket?.on("pdf", (pdf) => {
-    //   if (pdf.pdfStatus === 1) {
-    //     console.log("Link111 "+ pdf.pdfId)
-    //     setScreen({
-    //       screen: "material",
-    //       pdfId: pdf.pdfId,
-    //       linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
-    //     });
-    //   }
-    //   if (pdf.pdfStatus === 0)
-    //     setScreen({ screen: "", linkPdf: "", pdfId: "" });
-    // });
-
-    //----------- Socket check if teacher is to material, all other to material too
-
     socket?.on("get-pdf-status", (pdf) => {
       if (pdf.pdfStatus === 1) {
         setScreen({
@@ -103,16 +95,7 @@ const Meeting = () => {
     });
 
     //-------------- Allow student to annotate pdf file
-    socket?.on("set-role", (setting) => {
-      if (role.role !== "") {
-        if (role.role !== "teacher") {
-          setRole((prev) => {
-            return { ...prev, role: setting.role };
-          });
-          dispatch(setAccountRole(setting.role));
-        }
-      }
-    });
+ 
   }, [socket]);
 
   const toMaterial = () => {
@@ -153,11 +136,9 @@ const Meeting = () => {
       pdfId: pdf.id,
       socketId: socket.id,
     });
-    //console.log("Link222 " + pdf.pdfId);
     setScreen({
       screen: "material",
       pdfId: pdf.id,
-      // linkPdf: `http://localhost:3303/documents/${role.role}/${pdf.id}`,
       linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.id}`,
     });
   };
@@ -165,7 +146,6 @@ const Meeting = () => {
   useEffect(() => {
     setScreen({
       ...screen,
-      //linkPdf: `http://localhost:3303/documents/${role.role}/${screen.pdfId}`,
       linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
     });
   }, [role]);
@@ -187,6 +167,7 @@ const Meeting = () => {
               <VideoMeet
                 height={video_height_material}
                 name={userInfo.username}
+                id={userInfo.roomId}
               />
             </div>
             <div className="row-chat-container">
@@ -218,6 +199,7 @@ const Meeting = () => {
               <VideoMeet
                 height={video_height_material}
                 name={userInfo.username}
+                id={userInfo.roomId}
               />
             </div>
             <div className="col-chat-container">
@@ -255,6 +237,7 @@ const Meeting = () => {
               <VideoMeet
                 height={video_height_material}
                 name={userInfo.username}
+                id={userInfo.roomId}
               />
             </div>
             <div className="col-chat-container">

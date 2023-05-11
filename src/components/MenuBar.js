@@ -21,6 +21,7 @@ const StyledPlayIcon = styled(PlayArrowIcon, {
 
 function MenuBar(props) {
   //const navigate = useNavigate();
+  console.log("ROLE: "+props.role)
   const {
     status,
     startRecording,
@@ -32,6 +33,7 @@ function MenuBar(props) {
   const [recordStatus, setRecordStatus] = useState(null);
   const [toogleMenu, setToogleMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
 
   const startRecord = async () => {
     await startRecording();
@@ -72,10 +74,10 @@ function MenuBar(props) {
     //setRecordStatus(null);
   };
 
-
   const EndMeeting = () => {
     sessionStorage.clear();
-    window.location.replace('http://localhost:3001');
+    console.log("END")
+    
   }
 
   const toogleClicked = () => {
@@ -197,82 +199,83 @@ function MenuBar(props) {
                   )}
                 </div>
               ) : (
-                <div className="navbar-animate">
-                  <div className="nav-link" onClick={props.getClickedMaterial}>
-                    Material
-                  </div>
-                  <div
-                    className="nav-link"
-                    onClick={props.getClickedWhiteboard}
-                  >
-                    Whiteboard
-                  </div>
-                  <div className="nav-link">
-                    <Switch
-                      defaultChecked={false}
-                      unCheckedChildren="Disallow Student"
-                      checkedChildren="Allow Student"
-                      onChange={(checked) => props.getClickedAllow(checked)}
-                    ></Switch>
-                  </div>
-{/* 
-                  {recordStatus === "recording" ? (
-                    <div className="nav-link">
-                      <div className="navbar-record">
-                        <Typography className="blob red" />
-                        <Typography>Recording</Typography>
-                        <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-                          <PauseIcon
-                            style={{ color: "black" }}
-                            fontSize="small"
-                            onClick={pauseRecord}
-                          />
-                        </IconButton>
-                        <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-                          <StopIcon
-                            style={{ color: "black" }}
-                            fontSize="small"
-                            onClick={stopRecording}
-                          />
-                        </IconButton>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="nav-link">
-                      {recordStatus === "paused" ? (
-                        <div className="navbar-record">
-                          <Typography className="blob orange" />
-                          <Typography>Pausing</Typography>
-                          <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-                            <PlayArrowIcon
-                              style={{ color: "black" }}
-                              fontSize="small"
-                              onClick={resumeRecord}
-                            />
-                          </IconButton>
-                          <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-                            <StopIcon
-                              style={{ color: "black" }}
-                              fontSize="small"
-                              onClick={stopRecording}
-                            />
-                          </IconButton>
-                        </div>
-                      ) : (
-                        <div onClick={startRecord}>Record</div>
-                      )}
-                    </div>
-                  )}
-                  {screenWidth <= 842 && (
-                    <div
-                      className="nav-link"
-                      style={{ color: "red", fontWeight: "bold" }}
-                      onClick="history.back()"
-                    >
-                      End Meeting
-                    </div>
-                  )} */}
-                </div>
+                <></>
+//                 <div className="navbar-animate">
+//                   <div className="nav-link" onClick={props.getClickedMaterial}>
+//                     Material
+//                   </div>
+//                   <div
+//                     className="nav-link"
+//                     onClick={props.getClickedWhiteboard}
+//                   >
+//                     Whiteboard
+//                   </div>
+//                   <div className="nav-link">
+//                     <Switch
+//                       defaultChecked={false}
+//                       unCheckedChildren="Disallow Student"
+//                       checkedChildren="Allow Student"
+//                       onChange={(checked) => props.getClickedAllow(checked)}
+//                     ></Switch>
+//                   </div>
+// {/* 
+//                   {recordStatus === "recording" ? (
+//                     <div className="nav-link">
+//                       <div className="navbar-record">
+//                         <Typography className="blob red" />
+//                         <Typography>Recording</Typography>
+//                         <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+//                           <PauseIcon
+//                             style={{ color: "black" }}
+//                             fontSize="small"
+//                             onClick={pauseRecord}
+//                           />
+//                         </IconButton>
+//                         <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+//                           <StopIcon
+//                             style={{ color: "black" }}
+//                             fontSize="small"
+//                             onClick={stopRecording}
+//                           />
+//                         </IconButton>
+//                       </div>
+//                     </div>
+//                   ) : (
+//                     <div className="nav-link">
+//                       {recordStatus === "paused" ? (
+//                         <div className="navbar-record">
+//                           <Typography className="blob orange" />
+//                           <Typography>Pausing</Typography>
+//                           <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+//                             <PlayArrowIcon
+//                               style={{ color: "black" }}
+//                               fontSize="small"
+//                               onClick={resumeRecord}
+//                             />
+//                           </IconButton>
+//                           <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+//                             <StopIcon
+//                               style={{ color: "black" }}
+//                               fontSize="small"
+//                               onClick={stopRecording}
+//                             />
+//                           </IconButton>
+//                         </div>
+//                       ) : (
+//                         <div onClick={startRecord}>Record</div>
+//                       )}
+//                     </div>
+//                   )}
+//                   {screenWidth <= 842 && (
+//                     <div
+//                       className="nav-link"
+//                       style={{ color: "red", fontWeight: "bold" }}
+//                       onClick="history.back()"
+//                     >
+//                       End Meeting
+//                     </div>
+//                   )} */}
+//                 </div>
               )}
             </>
           )}

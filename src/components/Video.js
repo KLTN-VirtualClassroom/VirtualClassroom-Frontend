@@ -41,7 +41,7 @@ const Videocall = (props) => {
       <JitsiMeeting
         domain = {config.path.VIDEO_PATH}
         // domain = "meet.jit.si"
-        roomName="VirtualClassroom"
+        roomName={props.id}
         configOverwrite={{
           startWithAudioMuted: true,
           disableModeratorIndicator: true,

@@ -7,8 +7,8 @@ import "../Style/ChatScreen.css";
 const ChatScreen = (props) => {
   const account = props.userInfo;
 
-  const chatLink = `${config.path.CHAT_PATH}/channel/${account.roomId}?layout=embedded`;
-  // console.log("Link: " + chatLink);
+  const chatLink = `${config.path.CHAT_PATH}/channel/${account.roomId}?layout=embedded&resumeToken=${account.authToken}`;
+  console.log("Link: " + chatLink);
   const [authToken, setauthToken] = useState("");
 
   const [position, setPosition] = useState({
