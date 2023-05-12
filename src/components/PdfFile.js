@@ -7,7 +7,7 @@ const PDFFile = (props) => {
   console.log("Link: "+ props.linkPdf)
     return (
         <iframe key= {new Date()}
-          src = {props.linkPdf}
+          src = {`${props.linkPdf}?roomId=${props.roomId}`}
           title="pdfframe"
           height="100%"
           width="100%"

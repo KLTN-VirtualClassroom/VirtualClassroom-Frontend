@@ -47,7 +47,7 @@ const Meeting = () => {
       let accountInfor = {};
       if (data.data.username !== "") accountInfor = data.data;
 
-      socket?.emit("get-room-info", { room: accountInfor.roomId });
+      socket?.emit("get-room-info", { roomId: accountInfor.roomId });
       console.log(accountInfor);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
@@ -57,9 +57,10 @@ const Meeting = () => {
   }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
-  if (userInfo.roomId !== "") {
+  // if (userInfo.roomId !== "") {
     socket.on("pdf", (pdf) => {
       if (pdf.pdfStatus === 1) {
+        console.log("PDF: "+pdf.pdfId)
         setScreen({
           screen: "material",
           pdfId: pdf.pdfId,
@@ -69,7 +70,7 @@ const Meeting = () => {
       if (pdf.pdfStatus === 0)
         setScreen({ screen: "", linkPdf: "", pdfId: "" });
     });
-  }
+  //}
 
   socket?.on("set-role", (setting) => {
     if (role.role !== "") {
@@ -213,7 +214,7 @@ const Meeting = () => {
             {screen.pdfId === "" ? (
               <ChoosePDF getPdf={getPdf} userInfo={userInfo} />
             ) : (
-              <PdfScreen role={userInfo.role} linkPdf={screen.linkPdf} />
+              <PdfScreen role={userInfo.role} linkPdf={screen.linkPdf} roomId={userInfo.roomId} />
             )}
           </div>
         </div>
