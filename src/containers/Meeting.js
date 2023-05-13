@@ -35,6 +35,7 @@ const Meeting = () => {
     role: "",
     roomId: "",
     id: "",
+    authToken: ""
   });
   const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
   const [role, setRole] = useState(userInfo);
@@ -48,6 +49,7 @@ const Meeting = () => {
       if (data.data.username !== "") accountInfor = data.data;
 
       socket?.emit("get-room-info", { roomId: accountInfor.roomId });
+
       console.log(accountInfor);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
@@ -57,7 +59,7 @@ const Meeting = () => {
   }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
-  // if (userInfo.roomId !== "") {
+  if (userInfo.roomId !== "") {
     socket.on("pdf", (pdf) => {
       if (pdf.pdfStatus === 1) {
         console.log("PDF: "+pdf.pdfId)
@@ -70,7 +72,7 @@ const Meeting = () => {
       if (pdf.pdfStatus === 0)
         setScreen({ screen: "", linkPdf: "", pdfId: "" });
     });
-  //}
+  }
 
   socket?.on("set-role", (setting) => {
     if (role.role !== "") {
@@ -84,20 +86,31 @@ const Meeting = () => {
     }
   });
 
-  useEffect(() => {
-    socket?.on("get-pdf-status", (pdf) => {
-      if (pdf.pdfStatus === 1) {
-        setScreen({
-          screen: "material",
-          pdfId: pdf.pdfId,
-          linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
-        });
-      }
-    });
 
-    //-------------- Allow student to annotate pdf file
+  socket?.on("get-pdf-status", (pdf) => {
+    if (pdf.pdfStatus === 1) {
+      setScreen({
+        screen: "material",
+        pdfId: pdf.pdfId,
+        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+      });
+    }
+  });
+
+  // useEffect(() => {
+  //   socket?.on("get-pdf-status", (pdf) => {
+  //     if (pdf.pdfStatus === 1) {
+  //       setScreen({
+  //         screen: "material",
+  //         pdfId: pdf.pdfId,
+  //         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+  //       });
+  //     }
+  //   });
+
+  //   //-------------- Allow student to annotate pdf file
  
-  }, [socket]);
+  // }, [socket]);
 
   const toMaterial = () => {
     setScreen({ screen: "material", pdfId: "", linkPdf: "" });

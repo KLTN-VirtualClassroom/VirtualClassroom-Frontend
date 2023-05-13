@@ -42,7 +42,7 @@ const materialList = (props) => {
 
   }
   return (
-    <TableContainer component={Paper} sx={{maxHeight: 500}}>
+    <TableContainer component={Paper} sx={{maxHeight: 400}}>
       <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>

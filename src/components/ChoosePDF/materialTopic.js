@@ -22,7 +22,7 @@ const MaterialTopic = (props) => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, height: 550 }}>
+    <Box sx={{ flexGrow: 1, height: 450 }}>
       {topic ? (
         <>
           <Button variant="contained" startIcon={<ArrowBackIcon />} sx={{ my: 3, background: "#308ee6" }} onClick={backTopic}>
@@ -37,7 +37,7 @@ const MaterialTopic = (props) => {
       ) : (
         <Grid
           container
-          sx={{ height: 550, overflow: "auto" }}
+          sx={{ height: 450, overflow: "auto" }}
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
