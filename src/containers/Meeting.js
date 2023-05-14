@@ -39,21 +39,42 @@ const Meeting = () => {
   });
   const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
   const [role, setRole] = useState(userInfo);
+  const [isLoading, setLoading] = useState(true);
+
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getData = async () => {
-      const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
-      let accountInfor = {};
-      if (data.data.username !== "") accountInfor = data.data;
+      //const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
+      
+      let accountInfor = {}
+
+      var params = window.location.href.split("?")[1].split("&");
+      //console.log(params)
+      var data = {};
+      for (let x in params) {
+        data[params[x].split("=")[0]] = params[x].split("=")[1];
+      }
+
+      // window.addEventListener('message', function(e){
+      //   // accountInfor = JSON.parse(e.data)
+      //   console.log(e)
+      // })
+      await axios.post(`${config.path.SERVER_PATH}/getInfor`,data).then((response)=>{
+        accountInfor = response.data
+      });
+
+
+      //if (data.data.username !== "") accountInfor = data.data;
 
       socket?.emit("get-room-info", { roomId: accountInfor.roomId });
 
-      console.log(accountInfor);
+      //console.log(accountInfor);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
+      setLoading(false)
     };
     getData();
   }, []);
@@ -163,6 +184,10 @@ const Meeting = () => {
       linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
     });
   }, [role]);
+
+  if(isLoading){
+    return (<></>)
+  }
 
   if (screen.screen === "") {
     return (
