@@ -36,8 +36,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const materialList = (props) => {
   let pdfFile = props.pdfFile
 
-  if(props.topic){
-    pdfFile = pdfFile.filter(function (pdf) {return pdf.topic === props.topic})
+  if(props.course){
+    pdfFile = pdfFile.filter(function (pdf) {return pdf.courseId === props.course})
     console.log(pdfFile)
 
   }
@@ -55,7 +55,7 @@ const materialList = (props) => {
         </TableHead>
         <TableBody>
           {pdfFile.map(row => (
-            <StyledTableRow key={row.fileName}>
+            <StyledTableRow key={row.fileId}>
               <StyledTableCell component="th" scope="row">
                 {row.fileName}
               </StyledTableCell>
