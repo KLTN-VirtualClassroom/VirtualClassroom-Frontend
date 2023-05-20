@@ -21,7 +21,7 @@ const StyledPlayIcon = styled(PlayArrowIcon, {
 
 function MenuBar(props) {
   //const navigate = useNavigate();
-  console.log("ROLE: "+props.role)
+  //console.log("ROLE: "+props.role)
   const {
     status,
     startRecording,
@@ -131,8 +131,8 @@ function MenuBar(props) {
                   <div className="nav-link">
                     <Switch
                       defaultChecked={false}
-                      unCheckedChildren="Disallow Student"
-                      checkedChildren="Allow Student"
+                      unCheckedChildren="Disallow Edit PDF"
+                      checkedChildren="Allow Edit PDF"
                       onChange={(checked) => props.getClickedAllow(checked)}
                     ></Switch>
                   </div>

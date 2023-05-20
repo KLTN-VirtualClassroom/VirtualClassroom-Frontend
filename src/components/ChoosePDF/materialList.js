@@ -38,7 +38,7 @@ const materialList = (props) => {
 
   if(props.course){
     pdfFile = pdfFile.filter(function (pdf) {return pdf.courseId === props.course})
-    console.log(pdfFile)
+    //console.log(pdfFile)
 
   }
   return (

@@ -35,7 +35,7 @@ const Meeting = () => {
     role: "",
     roomId: "",
     id: "",
-    authToken: ""
+    authToken: "",
   });
   const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
   const [role, setRole] = useState(userInfo);
@@ -80,7 +80,6 @@ const Meeting = () => {
   }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
-  if (userInfo.roomId !== "") {
     socket.on("pdf", (pdf) => {
       if (pdf.pdfStatus === 1) {
         console.log("PDF: "+pdf.pdfId)
@@ -93,7 +92,6 @@ const Meeting = () => {
       if (pdf.pdfStatus === 0)
         setScreen({ screen: "", linkPdf: "", pdfId: "" });
     });
-  }
 
   socket?.on("set-role", (setting) => {
     if (role.role !== "") {
@@ -153,12 +151,10 @@ const Meeting = () => {
     if (userInfo.role === "teacher") {
       if (checked) {
         socket?.emit("allowance", {
-          socketId: socket.id,
           role: "student-allow-edit",
         });
       } else {
         socket.emit("allowance", {
-          socketId: socket.id,
           role: "student",
         });
       }

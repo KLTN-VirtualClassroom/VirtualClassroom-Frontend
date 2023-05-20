@@ -19,7 +19,7 @@ const MaterialTopic = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const openTopic = (choosenTopic) => {
-    console.log(choosenTopic.courseId)
+    //console.log(choosenTopic.courseId)
     setCourse(choosenTopic.courseId);
   };
 
@@ -40,7 +40,7 @@ const MaterialTopic = (props) => {
           `${config.path.SERVER_PATH}/topic/getTopicByCourse`
         )),
       ]);
-      console.log(pdfTopic)
+      //console.log(pdfTopic)
       setCourseList(pdfCourse.data);
       setTopicList(pdfTopic.data);
       setIsLoading(false);
