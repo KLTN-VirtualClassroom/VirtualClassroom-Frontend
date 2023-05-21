@@ -19,7 +19,6 @@ const MaterialTopic = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const openTopic = (choosenTopic) => {
-    //console.log(choosenTopic.courseId)
     setCourse(choosenTopic.courseId);
   };
 
@@ -58,7 +57,8 @@ const MaterialTopic = (props) => {
             <Button
               variant="contained"
               startIcon={<ArrowBackIcon />}
-              sx={{ my: 3, background: "#308ee6" }}
+              size = "small"
+              sx={{ marginBottom: 2,  background: "#308ee6" }}
               onClick={backTopic}
             >
               Back

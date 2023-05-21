@@ -136,7 +136,7 @@ const ChoosePDF = (props) => {
   }, []);
 
   return (
-    <Box sx={{ width: "100%", p: 1 }}>
+    <Box sx={{ width: "100%", p: 0 }}>
       <Button
         variant="contained"
         component="label"

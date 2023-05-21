@@ -36,13 +36,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const materialList = (props) => {
   let pdfFile = props.pdfFile
 
-  if(props.course){
-    pdfFile = pdfFile.filter(function (pdf) {return pdf.courseId === props.course})
-    //console.log(pdfFile)
+  if(props.topic){
+    pdfFile = pdfFile.filter(function (pdf) {return pdf.courseId === props.topic})
+    console.log(props.topic)
 
   }
   return (
-    <TableContainer component={Paper} sx={{maxHeight: 400}}>
+    <TableContainer component={Paper} sx={{maxHeight: 350}}>
       <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
