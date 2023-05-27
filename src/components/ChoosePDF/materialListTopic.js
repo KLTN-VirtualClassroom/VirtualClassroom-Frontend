@@ -6,7 +6,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import AddIcon from "@mui/icons-material/Add";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {
@@ -38,23 +38,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const MaterialList = (props) => {
-  let pdfFile = props.pdfFile;
-  const [searchFile, setSearchFile] = React.useState(pdfFile);
+const MaterialListTopic = (props) => {
+  const pdfList = props.pdfFile.filter(function (pdf) {
+    return pdf.courseId === props.topic;
+  });
 
-  React.useEffect(() => { setSearchFile(pdfFile)}, [pdfFile] )
-
-
+  const [searchFile, setSearchFile] = React.useState(pdfList);
 
   const handleSearch = (event) => {
     const searchTerm = event.target.value;
-   
+    //setSearchTopic(searchTerm);
+    //console.log(courseList.filter((course, index)=> course.courseName.includes(searchTerm)))
     setSearchFile(
-      pdfFile.filter((file, index) =>
+        pdfList.filter((file, index) =>
         file.fileName.toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
   };
+
 
   return (
     <>
@@ -62,7 +63,6 @@ const MaterialList = (props) => {
         align="center"
         justify="center"
         sx={{
-          width: "100%",
           mb: 2,
           display: "flex",
           justifyContent: "space-between",
@@ -73,15 +73,15 @@ const MaterialList = (props) => {
           size="small"
           variant="outlined"
           component="label"
-          startIcon={<AddIcon />}
+          startIcon={<ArrowBackIcon />}
+          onClick={props.backTopic}
           sx={{ marginTop: 1, marginBottom: 0 }}
         >
-          Upload File
-          <input type="file" hidden onChange={props.handleUploadPdf} />
+          Back
         </Button>
         <TextField
           id="standard-search"
-          label="Search topic"
+          label="Search course"
           type="search"
           variant="standard"
           InputProps={{
@@ -120,7 +120,7 @@ const MaterialList = (props) => {
                 <StyledTableCell></StyledTableCell>
                 <StyledTableCell></StyledTableCell>
                 <StyledTableCell>
-                  <Button onClick={() => props.getPdf({ id: row.fileId })} sx={{fontWeight: 100}}>
+                  <Button onClick={() => props.getPdf({ id: row.fileId })}>
                     Open
                   </Button>
                 </StyledTableCell>
@@ -132,4 +132,4 @@ const MaterialList = (props) => {
     </>
   );
 };
-export default memo(MaterialList);
+export default memo(MaterialListTopic);

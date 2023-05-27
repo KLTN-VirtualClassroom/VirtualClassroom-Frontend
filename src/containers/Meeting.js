@@ -17,6 +17,8 @@ import {
 
 import "../Style/App.css";
 import { useDispatch } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const socket = io(config.path.SOCKET_PATH);
 // const socket = io("http://localhost:3131");
@@ -40,15 +42,15 @@ const Meeting = () => {
   const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
   const [role, setRole] = useState(userInfo);
   const [isLoading, setLoading] = useState(true);
-
+  const [redirectLink, setRedirectLink] = useState(null);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getData = async () => {
       //const data = await axios.get(`${config.path.SERVER_PATH}/currentInfor`);
-      
-      let accountInfor = {}
+
+      let accountInfor = {};
 
       var params = window.location.href.split("?")[1].split("&");
       //console.log(params)
@@ -61,10 +63,11 @@ const Meeting = () => {
       //   // accountInfor = JSON.parse(e.data)
       //   console.log(e)
       // })
-      await axios.post(`${config.path.SERVER_PATH}/getInfor`,data).then((response)=>{
-        accountInfor = response.data
-      });
-
+      await axios
+        .post(`${config.path.SERVER_PATH}/getInfor`, data)
+        .then((response) => {
+          accountInfor = response.data;
+        });
 
       //if (data.data.username !== "") accountInfor = data.data;
 
@@ -74,25 +77,25 @@ const Meeting = () => {
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
-      setLoading(false)
+      setLoading(false);
     };
     getData();
   }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
-    socket.on("pdf", (pdf) => {
-      if (pdf.pdfStatus === 1) {
-        console.log("PDF: "+pdf.pdfId)
-        setScreen({
-          screen: "material",
-          pdfId: pdf.pdfId,
-          linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
-        });
-      }
-      if (pdf.pdfStatus === 0)
-        setScreen({ screen: "", linkPdf: "", pdfId: "" });
-    });
+  socket.on("pdf", (pdf) => {
+    if (pdf.pdfStatus === 1) {
+      console.log("PDF: " + pdf.pdfId);
+      setScreen({
+        screen: "material",
+        pdfId: pdf.pdfId,
+        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
+      });
+    }
+    if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
+  });
 
+  //----------- Socket for first access to room whether the teacher is allow edit pdf
   socket?.on("set-role", (setting) => {
     if (role.role !== "") {
       if (role.role !== "teacher") {
@@ -105,7 +108,7 @@ const Meeting = () => {
     }
   });
 
-
+  //----------- Socket for check teacher access a pdf file
   socket?.on("get-pdf-status", (pdf) => {
     if (pdf.pdfStatus === 1) {
       setScreen({
@@ -113,6 +116,15 @@ const Meeting = () => {
         pdfId: pdf.pdfId,
         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
       });
+    }
+  });
+
+  //--------Socket for check redirect meet
+  socket?.on("redirect-meeting", (link) => {
+    console.log("HE da nha");
+    if (link.linkMeeting) {
+      setRedirectLink(link.linkMeeting);
+      setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
     }
   });
 
@@ -128,7 +140,7 @@ const Meeting = () => {
   //   });
 
   //   //-------------- Allow student to annotate pdf file
- 
+
   // }, [socket]);
 
   const toMaterial = () => {
@@ -174,6 +186,16 @@ const Meeting = () => {
     });
   };
 
+  const redirectMeeting = (link) => {
+    console.log("MEeting: " + link);
+
+    socket?.emit("create-redirect-meeting", {
+      linkMeeting: link,
+    });
+    setRedirectLink(link);
+    setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
+  };
+
   useEffect(() => {
     setScreen({
       ...screen,
@@ -181,8 +203,12 @@ const Meeting = () => {
     });
   }, [role]);
 
-  if(isLoading){
-    return (<></>)
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 40 }}>
+        <CircularProgress></CircularProgress>
+      </Box>
+    );
   }
 
   if (screen.screen === "") {
@@ -194,6 +220,7 @@ const Meeting = () => {
           getClickedMain={toMain}
           getClickedAllow={setAllow}
           userInfo={userInfo}
+          screen={screen.screen}
           role={userInfo.role}
         />
         <div className="no">
@@ -226,6 +253,7 @@ const Meeting = () => {
           getClickedMain={toMain}
           getClickedAllow={setAllow}
           userInfo={userInfo}
+          screen={screen.screen}
           role={userInfo.role}
         />
         <div className="virtual">
@@ -248,7 +276,12 @@ const Meeting = () => {
             {screen.pdfId === "" ? (
               <ChoosePDF getPdf={getPdf} userInfo={userInfo} />
             ) : (
-              <PdfScreen role={userInfo.role} linkPdf={screen.linkPdf} roomId={userInfo.roomId} />
+              <PdfScreen
+                role={userInfo.role}
+                linkPdf={screen.linkPdf}
+                roomId={userInfo.roomId}
+                returnPage={toMaterial}
+              />
             )}
           </div>
         </div>
@@ -264,6 +297,7 @@ const Meeting = () => {
           getClickedWhiteboard={toWhiteboard}
           getClickedMain={toMain}
           userInfo={userInfo}
+          screen={screen.screen}
           role={userInfo.role}
         />
         <div className="virtual">
@@ -283,7 +317,10 @@ const Meeting = () => {
             </div>
           </div>
           <div className="third-container">
-            <WhiteboardScreen />
+            <WhiteboardScreen
+              linkNewMeeting={redirectLink}
+              redirectMeeting={redirectMeeting}
+            />
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import TopicIcon from "@mui/icons-material/Topic";
-import AddIcon from "@mui/icons-material/Add";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -45,6 +45,7 @@ function a11yProps(index) {
 const ChoosePDF = (props) => {
   const [value, setValue] = React.useState(0);
   const [pdfFile, setPdfFile] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const { getPdf } = props;
   const dispatch = useDispatch();
@@ -74,11 +75,7 @@ const ChoosePDF = (props) => {
     }).then((response) => {
       console.log(response.data);
       const fileUpload = response.data;
-      if (response.status === 200)
-        setPdfFile([
-          fileUpload,
-          ...pdfFile,
-        ]);
+      if (response.status === 200) setPdfFile([fileUpload, ...pdfFile]);
     });
 
     // fetch("http://localhost:3030/uploadPdf", {
@@ -130,22 +127,24 @@ const ChoosePDF = (props) => {
       ]);
       const materials = [...pdfPersonal.data, ...pdfTopic.data];
       dispatch(getMaterial(materials));
+      console.log(materials);
       setPdfFile(materials);
+      setIsLoading(false)
     };
     getData();
   }, []);
 
   return (
     <Box sx={{ width: "100%", p: 0 }}>
-      <Button
-        variant="contained"
+      {/* <Button
+        // variant="contained"
         component="label"
         startIcon={<AddIcon />}
-        sx={{ m: 3, background: "#308ee6" }}
+        sx={{ marginLeft: 3, marginTop: 2, marginBottom: 0 }}
       >
         Upload File
         <input type="file" hidden onChange={handleUploadPdf} />
-      </Button>
+      </Button> */}
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -168,7 +167,17 @@ const ChoosePDF = (props) => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <MaterialList getPdf={getPdf} pdfFile={pdfFile} />
+        {isLoading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 25 }}>
+            <CircularProgress></CircularProgress>
+          </Box>
+        ) : (
+          <MaterialList
+            getPdf={getPdf}
+            pdfFile={pdfFile}
+            handleUploadPdf={handleUploadPdf}
+          />
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
         <MaterialTopic getPdf={getPdf} pdfFile={pdfFile} />

@@ -6,10 +6,10 @@ import { useState, useEffect } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { styled } from "@mui/system";
 import { IconButton, Button } from "@mui/material";
-import {memo} from "react"
+import { memo } from "react";
 
 const StyledPlayIcon = styled(PlayArrowIcon, {
   name: "StyledPlayIcon",
@@ -33,7 +33,6 @@ function MenuBar(props) {
   const [recordStatus, setRecordStatus] = useState(null);
   const [toogleMenu, setToogleMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
 
   const startRecord = async () => {
     await startRecording();
@@ -76,15 +75,12 @@ function MenuBar(props) {
 
   const EndMeeting = () => {
     sessionStorage.clear();
-    console.log("END")
-    
-  }
+    console.log("END");
+  };
 
   const toogleClicked = () => {
     setToogleMenu(!toogleMenu);
   };
-
-
 
   useEffect(() => {
     if (mediaBlobUrl !== undefined) stopRecord();
@@ -119,15 +115,30 @@ function MenuBar(props) {
             <>
               {props.role === "teacher" ? (
                 <div className="navbar-animate">
-                  <div className="nav-link" onClick={props.getClickedMaterial}>
-                    Material
-                  </div>
-                  <div
-                    className="nav-link"
-                    onClick={props.getClickedWhiteboard}
-                  >
-                    Whiteboard
-                  </div>
+                  {props.screen === "material" ? (
+                    <div className="nav-link" onClick={props.getClickedMain}>
+                      Video Call
+                    </div>
+                  ) : (
+                    <div
+                      className="nav-link"
+                      onClick={props.getClickedMaterial}
+                    >
+                      Material
+                    </div>
+                  )}
+                  {props.screen === "whiteboard" ? (
+                    <div className="nav-link" onClick={props.getClickedMain}>
+                      Video Call
+                    </div>
+                  ) : (
+                    <div
+                      className="nav-link"
+                      onClick={props.getClickedWhiteboard}
+                    >
+                      To Meeting
+                    </div>
+                  )}
                   <div className="nav-link">
                     <Switch
                       defaultChecked={false}
@@ -200,82 +211,82 @@ function MenuBar(props) {
                 </div>
               ) : (
                 <></>
-//                 <div className="navbar-animate">
-//                   <div className="nav-link" onClick={props.getClickedMaterial}>
-//                     Material
-//                   </div>
-//                   <div
-//                     className="nav-link"
-//                     onClick={props.getClickedWhiteboard}
-//                   >
-//                     Whiteboard
-//                   </div>
-//                   <div className="nav-link">
-//                     <Switch
-//                       defaultChecked={false}
-//                       unCheckedChildren="Disallow Student"
-//                       checkedChildren="Allow Student"
-//                       onChange={(checked) => props.getClickedAllow(checked)}
-//                     ></Switch>
-//                   </div>
-// {/* 
-//                   {recordStatus === "recording" ? (
-//                     <div className="nav-link">
-//                       <div className="navbar-record">
-//                         <Typography className="blob red" />
-//                         <Typography>Recording</Typography>
-//                         <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-//                           <PauseIcon
-//                             style={{ color: "black" }}
-//                             fontSize="small"
-//                             onClick={pauseRecord}
-//                           />
-//                         </IconButton>
-//                         <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-//                           <StopIcon
-//                             style={{ color: "black" }}
-//                             fontSize="small"
-//                             onClick={stopRecording}
-//                           />
-//                         </IconButton>
-//                       </div>
-//                     </div>
-//                   ) : (
-//                     <div className="nav-link">
-//                       {recordStatus === "paused" ? (
-//                         <div className="navbar-record">
-//                           <Typography className="blob orange" />
-//                           <Typography>Pausing</Typography>
-//                           <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-//                             <PlayArrowIcon
-//                               style={{ color: "black" }}
-//                               fontSize="small"
-//                               onClick={resumeRecord}
-//                             />
-//                           </IconButton>
-//                           <IconButton sx={{ marginLeft: 1, padding: 0 }}>
-//                             <StopIcon
-//                               style={{ color: "black" }}
-//                               fontSize="small"
-//                               onClick={stopRecording}
-//                             />
-//                           </IconButton>
-//                         </div>
-//                       ) : (
-//                         <div onClick={startRecord}>Record</div>
-//                       )}
-//                     </div>
-//                   )}
-//                   {screenWidth <= 842 && (
-//                     <div
-//                       className="nav-link"
-//                       style={{ color: "red", fontWeight: "bold" }}
-//                       onClick="history.back()"
-//                     >
-//                       End Meeting
-//                     </div>
-//                   )} */}
-//                 </div>
+                //                 <div className="navbar-animate">
+                //                   <div className="nav-link" onClick={props.getClickedMaterial}>
+                //                     Material
+                //                   </div>
+                //                   <div
+                //                     className="nav-link"
+                //                     onClick={props.getClickedWhiteboard}
+                //                   >
+                //                     Whiteboard
+                //                   </div>
+                //                   <div className="nav-link">
+                //                     <Switch
+                //                       defaultChecked={false}
+                //                       unCheckedChildren="Disallow Student"
+                //                       checkedChildren="Allow Student"
+                //                       onChange={(checked) => props.getClickedAllow(checked)}
+                //                     ></Switch>
+                //                   </div>
+                // {/*
+                //                   {recordStatus === "recording" ? (
+                //                     <div className="nav-link">
+                //                       <div className="navbar-record">
+                //                         <Typography className="blob red" />
+                //                         <Typography>Recording</Typography>
+                //                         <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+                //                           <PauseIcon
+                //                             style={{ color: "black" }}
+                //                             fontSize="small"
+                //                             onClick={pauseRecord}
+                //                           />
+                //                         </IconButton>
+                //                         <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+                //                           <StopIcon
+                //                             style={{ color: "black" }}
+                //                             fontSize="small"
+                //                             onClick={stopRecording}
+                //                           />
+                //                         </IconButton>
+                //                       </div>
+                //                     </div>
+                //                   ) : (
+                //                     <div className="nav-link">
+                //                       {recordStatus === "paused" ? (
+                //                         <div className="navbar-record">
+                //                           <Typography className="blob orange" />
+                //                           <Typography>Pausing</Typography>
+                //                           <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+                //                             <PlayArrowIcon
+                //                               style={{ color: "black" }}
+                //                               fontSize="small"
+                //                               onClick={resumeRecord}
+                //                             />
+                //                           </IconButton>
+                //                           <IconButton sx={{ marginLeft: 1, padding: 0 }}>
+                //                             <StopIcon
+                //                               style={{ color: "black" }}
+                //                               fontSize="small"
+                //                               onClick={stopRecording}
+                //                             />
+                //                           </IconButton>
+                //                         </div>
+                //                       ) : (
+                //                         <div onClick={startRecord}>Record</div>
+                //                       )}
+                //                     </div>
+                //                   )}
+                //                   {screenWidth <= 842 && (
+                //                     <div
+                //                       className="nav-link"
+                //                       style={{ color: "red", fontWeight: "bold" }}
+                //                       onClick="history.back()"
+                //                     >
+                //                       End Meeting
+                //                     </div>
+                //                   )} */}
+                //                 </div>
               )}
             </>
           )}
@@ -351,7 +362,7 @@ function MenuBar(props) {
 
           <div>
             <label className="navbar-toggler" htmlFor="navbar-indicator">
-              <MoreHorizIcon/>
+              <MoreHorizIcon />
             </label>
           </div>
           {/* <a class="nav-link" href="#">Copy link</a> */}

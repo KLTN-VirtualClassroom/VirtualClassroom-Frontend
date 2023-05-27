@@ -1,0 +1,12 @@
+.icon-container {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .icon {
+    transition: color 0.3s ease; /* Adjust the transition properties as needed */
+  }
+  
+  .icon-container:hover .icon {
+    color: red; /* Change the color to your desired hover state */
+  }

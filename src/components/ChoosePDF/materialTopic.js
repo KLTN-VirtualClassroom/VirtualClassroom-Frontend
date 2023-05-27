@@ -1,22 +1,45 @@
 import * as React from "react";
-import { experimentalStyled as styled } from "@mui/material/styles";
-import { Box, Button } from "@mui/material";
-import axios from 'axios'
-import Paper from "@mui/material/Paper";
+import {
+  Box,
+  Button,
+  Container,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea, Typography } from "@mui/material";
-import MaterialList from "./materialList";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import MaterialListTopic from "./materialListTopic";
+import SearchIcon from "@mui/icons-material/Search";
 import config from "../../config/config";
+
+import { getCourseList } from "../../redux/slices/courseSlice.js";
 
 const MaterialTopic = (props) => {
   const [course, setCourse] = React.useState(null);
   const [topicList, setTopicList] = React.useState([]);
   const [courseList, setCourseList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [searchCourse, setSearchCourse] = React.useState([]);
+
+  const dispatch = useDispatch();
+
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value;
+    //setSearchTopic(searchTerm);
+    //console.log(courseList.filter((course, index)=> course.courseName.includes(searchTerm)))
+    setSearchCourse(
+      courseList.filter((course, index) =>
+        course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  };
 
   const openTopic = (choosenTopic) => {
     setCourse(choosenTopic.courseId);
@@ -24,11 +47,11 @@ const MaterialTopic = (props) => {
 
   const backTopic = () => {
     setCourse(null);
+    setSearchCourse(courseList);
   };
 
   React.useEffect(() => {
-    async function getAuth() {
-
+    const getData = async function () {
       let pdfCourse = [];
       let pdfTopic = [];
       axios.all([
@@ -39,63 +62,130 @@ const MaterialTopic = (props) => {
           `${config.path.SERVER_PATH}/topic/getTopicByCourse`
         )),
       ]);
-      //console.log(pdfTopic)
-      setCourseList(pdfCourse.data);
+
+      dispatch(getCourseList(pdfCourse.data));
+
       setTopicList(pdfTopic.data);
+      setCourseList(pdfCourse.data);
+      setSearchCourse(pdfCourse.data);
       setIsLoading(false);
-    }
-    getAuth();
-   
+    };
+    getData();
   }, []);
 
-  if (isLoading) <></>;
+  if (isLoading)
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 25 }}>
+        <CircularProgress></CircularProgress>
+      </Box>
+    );
   else
     return (
       <Box sx={{ flexGrow: 1, height: 450 }}>
         {course ? (
           <>
-            <Button
+            {/* <Button
               variant="contained"
               startIcon={<ArrowBackIcon />}
-              size = "small"
-              sx={{ marginBottom: 2,  background: "#308ee6" }}
+              size="small"
+              sx={{ marginBottom: 2, background: "#308ee6" }}
               onClick={backTopic}
             >
               Back
-            </Button>
-            <MaterialList
+            </Button> */}
+            <MaterialListTopic
               getPdf={props.getPdf}
               pdfFile={topicList}
               topic={course}
+              backTopic={backTopic}
             />
           </>
         ) : (
-          <Grid
-            container
-            sx={{ height: 450, overflow: "auto" }}
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-          >
-            {courseList.map((row, index) => (
-              <Grid item xs={2} sm={4} md={4} key={index}>
-                <Card sx={{ maxWidth: 345 }}>
-                  <CardActionArea onClick={() => openTopic(row)}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={row.courseThumbnail}
-                      alt="topic image"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom component="div">
-                        {row.courseName}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+          <>
+            <Box
+              align="center"
+              justify="center"
+              sx={{
+                mb: 4,
+                display: "flex",
+                justifyContent: "space-between",
+                align: "center",
+              }}
+            >
+              <Button
+                size="small"
+                variant="variant"
+                component="label"
+                //startIcon={<ArrowBackIcon />}
+                onClick={props.backTopic}
+                sx={{ marginTop: 1, marginBottom: 0 }}
+              >
+                Course List
+              </Button>
+              <TextField
+                id="standard-search"
+                label="Search course"
+                type="search"
+                variant="standard"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={handleSearch}
+                sx={{ width: 200 }}
+              />
+            </Box>
+            <Grid
+              container
+              sx={{ height: 480, overflow: "auto" }}
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              {searchCourse.map((row, index) => (
+                <Grid
+                  item
+                  xs={2}
+                  sm={4}
+                  md={4}
+                  key={index}
+                  // sx={{ display: "flex" }}
+                >
+                  <Card sx={{ maxWidth: 345 }}>
+                    <CardActionArea
+                      onClick={() => openTopic(row)}
+                      // sx={{
+                      //   display: "flex",
+                      //   flexDirection: "column",
+                      //   justifyContent: "space-between",
+                      //   height: "100%",
+                      // }}
+                    >
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        image={row.courseThumbnail}
+                        alt="topic image"
+                      />
+                      <CardContent>
+                        <Typography
+                          gutterBottom
+                          align="center"
+                          fontWeight={"bold"}
+                          fontSize={"1rem"}
+                          component="div"
+                        >
+                          {row.courseName}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </>
         )}
       </Box>
     );

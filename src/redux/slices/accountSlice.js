@@ -5,6 +5,7 @@ const initialState = {
     password: '',
     role: '',
     roomId: '',
+    email: '',
     status: ''
 };
 
