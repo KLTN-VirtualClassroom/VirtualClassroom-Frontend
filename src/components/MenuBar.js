@@ -109,7 +109,8 @@ function MenuBar(props) {
       <nav className="navbar">
         <div className="navbar-left">
           <div className="navbar-brand" onClick={props.getClickedMain}>
-            VirtualClassroom
+            {/* Lettutor */}
+            <img class="logo-img" src="https://meet.lettutor.com/images/watermark.svg" height={"20"} alt="Tutoring logo"></img>
           </div>
           {(toogleMenu || screenWidth > 842) && (
             <>

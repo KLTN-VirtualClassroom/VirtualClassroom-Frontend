@@ -71,7 +71,7 @@ const Meeting = () => {
 
       //if (data.data.username !== "") accountInfor = data.data;
 
-      socket?.emit("get-room-info", { roomId: accountInfor.roomId });
+      socket?.emit("get-room-info", { roomId: accountInfor.roomId, type: "call" });
 
       //console.log(accountInfor);
       dispatch(setAccountInfo(accountInfor));
