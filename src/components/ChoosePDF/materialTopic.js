@@ -20,15 +20,16 @@ import SearchIcon from "@mui/icons-material/Search";
 import config from "../../config/config";
 
 import { getCourseList } from "../../redux/slices/courseSlice.js";
+import {getTopicList} from "../../redux/slices/topicSlice.js"
 
 const MaterialTopic = (props) => {
   const [course, setCourse] = React.useState(null);
-  const [topicList, setTopicList] = React.useState([]);
-  const [courseList, setCourseList] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [searchCourse, setSearchCourse] = React.useState([]);
+  const [topicList, setTopicList] = React.useState(props.pdfTopic);
+  const [courseList, setCourseList] = React.useState(props.pdfCourse);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [searchCourse, setSearchCourse] = React.useState(props.pdfCourse);
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const handleSearch = (event) => {
     const searchTerm = event.target.value;
@@ -50,28 +51,29 @@ const MaterialTopic = (props) => {
     setSearchCourse(courseList);
   };
 
-  React.useEffect(() => {
-    const getData = async function () {
-      let pdfCourse = [];
-      let pdfTopic = [];
-      axios.all([
-        (pdfCourse = await axios.get(
-          `${config.path.SERVER_PATH}/course/getCourse`
-        )),
-        (pdfTopic = await axios.get(
-          `${config.path.SERVER_PATH}/topic/getTopicByCourse`
-        )),
-      ]);
+  // React.useEffect(() => {
+  //   const getData = async function () {
+  //     let pdfCourse = [];
+  //     let pdfTopic = [];
+  //     axios.all([
+  //       (pdfCourse = await axios.get(
+  //         `${config.path.SERVER_PATH}/course/getCourse`
+  //       )),
+  //       (pdfTopic = await axios.get(
+  //         `${config.path.SERVER_PATH}/topic/getTopicByCourse`
+  //       )),
+  //     ]);
 
-      dispatch(getCourseList(pdfCourse.data));
+  //     dispatch(getCourseList(pdfCourse.data));
+  //     dispatch(getTopicList(pdfTopic.data));
 
-      setTopicList(pdfTopic.data);
-      setCourseList(pdfCourse.data);
-      setSearchCourse(pdfCourse.data);
-      setIsLoading(false);
-    };
-    getData();
-  }, []);
+  //     setTopicList(pdfTopic.data);
+  //     setCourseList(pdfCourse.data);
+  //     setSearchCourse(pdfCourse.data);
+  //     setIsLoading(false);
+  //   };
+  //   getData();
+  // }, []);
 
   if (isLoading)
     return (

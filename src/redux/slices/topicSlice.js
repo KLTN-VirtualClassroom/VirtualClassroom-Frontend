@@ -3,21 +3,18 @@ import { materialApi } from "../../assets/materialApi";
 
 const initialState = [];
 
-const materialSlice = createSlice({
-  name: "material",
+const topicSlice = createSlice({
+  name: "topic",
   initialState,
   reducers: {
-    getMaterial: (state, action) => {
+    getTopicList: (state, action) => {
       console.log(action);
       state = action.payload;
-    },
-    addMaterial: (state, action) => {
-      state.push(action.payload);
     },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      materialApi.endpoints.getPersonalMaterial.matchFulfilled,
+      materialApi.endpoints.getTopicList.matchFulfilled,
       (state, action) => {
         console.log(action.payload);
         state = action.payload;
@@ -25,5 +22,5 @@ const materialSlice = createSlice({
     );
   },
 });
-export const { getMaterial, addMaterial } = materialSlice.actions;
-export default materialSlice.reducer;
+export const { getTopicList } = topicSlice.actions;
+export default topicSlice.reducer;

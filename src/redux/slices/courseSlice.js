@@ -1,26 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-// const initialState = {
-//     courseId: '',
-//     dataUpload: '',
-//     fileId: '',
-//     fileNumber: '',
-//     lastAccess: '',
-//     linkId: '',
-//     topicId: '', 
-//     _id: ''
-// };]
+import { materialApi } from "../../assets/materialApi";
 
 const initialState = [];
 
 const courseSlice = createSlice({
-  name: 'topic',
+  name: "course",
   initialState,
   reducers: {
     getCourseList: (state, action) => {
-        console.log(action);
+      console.log(action);
+      state = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      materialApi.endpoints.getCourseList.matchFulfilled,
+      (state, action) => {
+        console.log(action.payload);
         state = action.payload;
-      },
+      }
+    );
   },
 });
 export const { getCourseList } = courseSlice.actions;

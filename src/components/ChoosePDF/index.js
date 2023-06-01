@@ -10,6 +10,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { getMaterial, addMaterial } from "../../redux/slices/materialSlice";
+import { getCourseList } from "../../redux/slices/courseSlice.js";
+import { getTopicList } from "../../redux/slices/topicSlice.js";
+
+import {
+  useGetCourseListMutation,
+  useGetTopicListMutation,
+  useGetPersonalMaterialMutation,
+} from "../../assets/materialApi.js";
 
 import MaterialList from "./materialList";
 import MaterialTopic from "./materialTopic";
@@ -45,6 +53,12 @@ function a11yProps(index) {
 const ChoosePDF = (props) => {
   const [value, setValue] = React.useState(0);
   const [pdfFile, setPdfFile] = React.useState([]);
+  const [pdfTopic, setPdfTopic] = React.useState([]);
+  const [pdfCourse, setPdfCourse] = React.useState([]);
+  const [getPersonalPdf] = useGetPersonalMaterialMutation();
+  const [getPdfCourse] = useGetCourseListMutation();
+  const [getPdfTopic] = useGetTopicListMutation();
+
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { getPdf } = props;
@@ -52,13 +66,7 @@ const ChoosePDF = (props) => {
 
   const handleUploadPdf = (event) => {
     const selectedFile = event.target.files[0];
-    // axios
-    //   .post("https://bangtrang.click/api/documents", selectedFile, {
-    //     headers: {
-    //       'Content-Type': "application/pdf",
-    //       Authorization: "Token token=secret",
-    //     },
-    //   })
+
     let formData = new FormData();
     console.log(typeof selectedFile);
     formData.append("file", selectedFile);
@@ -77,36 +85,6 @@ const ChoosePDF = (props) => {
       const fileUpload = response.data;
       if (response.status === 200) setPdfFile([fileUpload, ...pdfFile]);
     });
-
-    // fetch("http://localhost:3030/uploadPdf", {
-    //   method: 'POST',
-    //   maxBodyLength: Infinity,
-    //   body: formData,
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data.path)
-    // })
-    // .catch(error => {
-    //   console.error(error)
-    // })
-
-    // axios
-    // .post("http://localhost:3030/material/uploadMaterial", formData)
-    //   .then(function (response) {
-    //     // setPdfFile([
-    //     //   {
-    //     //     name: event.target.files[0].name,
-    //     //     id: response.document_id,
-    //     //     topic: "Breakfast",
-    //     //   },
-    //     //   ...pdfFile,
-    //     // ]);
-    //     console.log(response)
-    //   })
-    //   .catch(function () {
-    //     console.log("Error Upload");
-    //   });
   };
 
   const handleChange = (event, newValue) => {
@@ -115,36 +93,45 @@ const ChoosePDF = (props) => {
 
   React.useEffect(() => {
     const getData = async () => {
-      let pdfPersonal = [];
-      let pdfTopic = [];
-      axios.all([
-        (pdfPersonal = await axios.get(
-          `${config.path.SERVER_PATH}/material/getPersonalMaterial?teacherID=${props.userInfo.id}`
-        )),
-        (pdfTopic = await axios.get(
-          `${config.path.SERVER_PATH}/material/getTopicMaterial`
-        )),
-      ]);
-      const materials = [...pdfPersonal.data, ...pdfTopic.data];
-      dispatch(getMaterial(materials));
-      console.log(materials);
-      setPdfFile(materials);
-      setIsLoading(false)
+      const listMaterial = await getPersonalPdf(props.userInfo.id);
+      const listCourse = await getPdfCourse();
+      const listTopic = await getPdfTopic();
+      console.log(listMaterial.data)
+      setPdfFile(listMaterial.data);
+      setPdfCourse(listCourse.data);
+      setPdfTopic(listTopic.data);
+
+      //setPdfFile(listMaterial)
+      // let pdfPersonal = [];
+      // let pdfCourse = [];
+      // let pdfTopic = [];
+      // axios.all([
+      //   (pdfPersonal = await axios.get(
+      //     `${config.path.SERVER_PATH}/material/getPersonalMaterial?teacherID=${props.userInfo.id}`
+      //   )),
+      //   (pdfCourse = await axios.get(
+      //     `${config.path.SERVER_PATH}/course/getCourse`
+      //   )),
+      //   (pdfTopic = await axios.get(
+      //     `${config.path.SERVER_PATH}/topic/getTopicByCourse`
+      //   )),
+      // ]);
+      // // const materials = [...pdfPersonal.data, ...pdfTopic.data];
+      // const materials = [...pdfPersonal.data];
+
+      // dispatch(getMaterial(materials));
+      // dispatch(getCourseList(pdfCourse.data));
+      // dispatch(getTopicList(pdfTopic.data));
+      // setPdfFile(materials);
+      // setPdfCourse(pdfCourse.data);
+      // setPdfTopic(pdfTopic.data);
+      setIsLoading(false);
     };
     getData();
   }, []);
 
   return (
     <Box sx={{ width: "100%", p: 0 }}>
-      {/* <Button
-        // variant="contained"
-        component="label"
-        startIcon={<AddIcon />}
-        sx={{ marginLeft: 3, marginTop: 2, marginBottom: 0 }}
-      >
-        Upload File
-        <input type="file" hidden onChange={handleUploadPdf} />
-      </Button> */}
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -180,42 +167,15 @@ const ChoosePDF = (props) => {
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MaterialTopic getPdf={getPdf} pdfFile={pdfFile} />
+        <MaterialTopic
+          getPdf={getPdf}
+          pdfFile={pdfFile}
+          pdfTopic={pdfTopic}
+          pdfCourse={pdfCourse}
+        />
       </TabPanel>
     </Box>
   );
 };
 
 export default React.memo(ChoosePDF);
-
-const pdfList = [
-  {
-    name: "Big Buck Video",
-    id: "7KS3FWE0DGY9CKZE4X9X414PYZ",
-    topic: "Breakfast",
-  },
-
-  {
-    name: "Getting start",
-    id: "7KS3FWE0DGY9CKZE4X9X414PYZ",
-    topic: "Breakfast",
-  },
-
-  {
-    name: "Something not English",
-    id: "7KS3FWE0DGY9CKZE4X9X414PYZ",
-    topic: "Breakfast",
-  },
-
-  {
-    name: "Mindset level 3",
-    id: "7KS3FWE0DGY9CKZE4X9X414PYZ",
-    topic: "Camera",
-  },
-
-  {
-    name: "SD Interview",
-    id: "7KS3FWE0DGY9CKZE4X9X414PYZ",
-    topic: "Camera",
-  },
-];
