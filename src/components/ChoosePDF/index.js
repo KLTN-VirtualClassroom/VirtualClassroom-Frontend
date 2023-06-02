@@ -96,7 +96,6 @@ const ChoosePDF = (props) => {
       const listMaterial = await getPersonalPdf(props.userInfo.id);
       const listCourse = await getPdfCourse();
       const listTopic = await getPdfTopic();
-      console.log(listMaterial.data)
       setPdfFile(listMaterial.data);
       setPdfCourse(listCourse.data);
       setPdfTopic(listTopic.data);

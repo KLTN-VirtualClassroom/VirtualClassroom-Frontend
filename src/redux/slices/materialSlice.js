@@ -8,7 +8,6 @@ const materialSlice = createSlice({
   initialState,
   reducers: {
     getMaterial: (state, action) => {
-      console.log(action);
       state = action.payload;
     },
     addMaterial: (state, action) => {

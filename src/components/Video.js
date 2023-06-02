@@ -1,40 +1,14 @@
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import config from '../config/config';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { memo } from "react";
+import { motion as m } from "framer-motion";
 
 
-const Videocall = (props) => {
+const Videocall = forwardRef((props,ref) => {
   const [name, setName] = useState("");
-  //console.log("CONF " + config.path.VIDEO_PATH)
-  // useEffect(()=>{
-  //   const getData = async () => {
-  //     const data = await axios.get(`http://localhost:3030/currentInfor`);
-
-  //     const data2 = await axios.get(`http://localhost:3030/user/getList`);
-  //     console.log(data2)
-
-  //     setName(data.data.username);
-  //   };
-  //   getData();
-  // },[])
-
-  // const [position, setPosition] = useState({
-  //   left: "0px",
-  //   top: "0px",
-  //   position: "relative",
-  //   height: "93vh"
-  // });
-
-  // const handleClick = () => {
-  //   setPosition({
-  //     left: "250px",
-  //     top: "150px",
-  //     position: "relative",
-  //     height: "15vh"
-  //   });
-  // };
+  
 
   return (
     <>
@@ -79,6 +53,6 @@ const Videocall = (props) => {
       />
     </>
   );
-};
+});
 
 export default memo(Videocall);

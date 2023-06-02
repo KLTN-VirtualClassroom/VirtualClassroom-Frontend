@@ -9,7 +9,6 @@ const courseSlice = createSlice({
   initialState,
   reducers: {
     getCourseList: (state, action) => {
-      console.log(action);
       state = action.payload;
     },
   },
@@ -17,7 +16,6 @@ const courseSlice = createSlice({
     builder.addMatcher(
       materialApi.endpoints.getCourseList.matchFulfilled,
       (state, action) => {
-        console.log(action.payload);
         state = action.payload;
       }
     );

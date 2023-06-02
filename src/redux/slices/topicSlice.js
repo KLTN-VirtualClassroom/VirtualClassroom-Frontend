@@ -8,7 +8,6 @@ const topicSlice = createSlice({
   initialState,
   reducers: {
     getTopicList: (state, action) => {
-      console.log(action);
       state = action.payload;
     },
   },
@@ -16,7 +15,6 @@ const topicSlice = createSlice({
     builder.addMatcher(
       materialApi.endpoints.getTopicList.matchFulfilled,
       (state, action) => {
-        console.log(action.payload);
         state = action.payload;
       }
     );

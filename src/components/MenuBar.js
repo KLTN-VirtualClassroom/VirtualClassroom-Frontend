@@ -140,6 +140,7 @@ function MenuBar(props) {
                       To Meeting
                     </div>
                   )}
+                  { props.pdfOpen  &&
                   <div className="nav-link">
                     <Switch
                       defaultChecked={false}
@@ -148,6 +149,7 @@ function MenuBar(props) {
                       onChange={(checked) => props.getClickedAllow(checked)}
                     ></Switch>
                   </div>
+                  }
                   {/* {recordStatus === "recording" ? (
                     <div className="nav-link">
                       <div className="navbar-record">
@@ -350,10 +352,11 @@ function MenuBar(props) {
           {screenWidth > 842 && (
             <Button
               sx={{
+                fontSize: "0.8rem",
                 marginRight: 1,
                 color: "red",
-                fontWeight: "bold",
-                "&:hover": { backgroundColor: "#f2f2f2" },
+                //fontWeight: "bold",
+                "&:hover": { backgroundColor: "transparent" },
               }}
               onClick={EndMeeting}
             >

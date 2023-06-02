@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useState } from "react";
 import { memo } from "react";
 
 import config from "../config/config";
 import "../Style/ChatScreen.css";
+import { motion as m } from "framer-motion";
 
-const ChatScreen = (props) => {
+const ChatScreen = forwardRef((props, ref) => {
   const account = props.userInfo;
 
   const chatLink = `${config.path.CHAT_PATH}/channel/${account.roomId}?layout=embedded&resumeToken=${account.authToken}`;
   console.log("Link: " + chatLink);
-  const [authToken, setauthToken] = useState("");
 
   const [position, setPosition] = useState({
     left: "0px",
@@ -19,7 +19,12 @@ const ChatScreen = (props) => {
 
   return (
     <>
-      <iframe
+      <m.iframe
+        ref={ref}
+        initial={{ y: "100%" }}
+        animate={{ y: "0%" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        exit={{ opacity: 0.5 }}
         title="chat"
         src={chatLink}
         style={{
@@ -31,5 +36,5 @@ const ChatScreen = (props) => {
       />
     </>
   );
-};
+});
 export default memo(ChatScreen);
