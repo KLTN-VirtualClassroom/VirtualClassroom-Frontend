@@ -8,7 +8,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Link } from "react-router-dom";
 
 const WhiteboardScreen = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -23,25 +22,30 @@ const WhiteboardScreen = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log(props.userInfo.email);
   const handleChangeMeeting = () => {
-    axios({
-      method: "get",
-      url: "http://localhost:8000/schedule_event",
-    }).then((response) => {
-      console.log(response.data);
-      const linkMeeting = response.data.msg;
-      window.open(linkMeeting);
-      setLinkGgMeeting(linkMeeting);
-      setOpen(false);
-      props.redirectMeeting(linkMeeting);
-    });
+    axios
+      .get(`http://localhost:8000/schedule_event?email=${props.userInfo.email}`)
+      .then((response) => {
+        console.log(response.data);
+        const linkMeeting = response.data.msg;
+        window.open(linkMeeting);
+        setLinkGgMeeting(linkMeeting);
+        setOpen(false);
+        props.redirectMeeting(linkMeeting);
+      });
   };
 
   if (linkGgMeeting)
     return (
-      <Box display={"flex"} justifyContent={"center"} mt={30} sx={{fontWeight: "bold", fontSize: 20}}>
-        Room đã được chuyển hướng đến trang Google Meet khác với đường dẫn: &nbsp;
+      <Box
+        display={"flex"}
+        justifyContent={"center"}
+        mt={30}
+        sx={{ fontWeight: "bold", fontSize: 20 }}
+      >
+        Room đã được chuyển hướng đến trang Google Meet khác với đường dẫn:
+        &nbsp;
         <a href={linkGgMeeting} target="_blank" rel="noopener noreferrer">
           Click here
         </a>
@@ -50,8 +54,13 @@ const WhiteboardScreen = (props) => {
   else
     return (
       <div>
-        <Box display={"flex"} justifyContent={"center"} mt={30} >
-          <Button sx={{fontWeight: "bold", fontSize: 20}} onClick={handleClickOpen}>Tạo Google Meet mới</Button>
+        <Box display={"flex"} justifyContent={"center"} mt={30}>
+          <Button
+            sx={{ fontWeight: "bold", fontSize: 20 }}
+            onClick={handleClickOpen}
+          >
+            Tạo Google Meet mới
+          </Button>
         </Box>
         <Dialog
           open={open}

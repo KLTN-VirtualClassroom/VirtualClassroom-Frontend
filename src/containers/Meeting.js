@@ -310,6 +310,7 @@ const Meeting = () => {
           </div>
           <div className="third-container">
             <WhiteboardScreen
+              userInfo={userInfo}
               linkNewMeeting={redirectLink}
               redirectMeeting={redirectMeeting}
             />
