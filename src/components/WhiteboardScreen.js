@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import config from "../config/config";
 
 const WhiteboardScreen = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -25,7 +26,7 @@ const WhiteboardScreen = (props) => {
   console.log(props.userInfo.email);
   const handleChangeMeeting = () => {
     axios
-      .get(`http://localhost:8000/schedule_event?email=${props.userInfo.email}`)
+      .get(`${config.path.REDIRECT_PATH}?email=${props.userInfo.email}`)
       .then((response) => {
         console.log(response.data);
         const linkMeeting = response.data.msg;
