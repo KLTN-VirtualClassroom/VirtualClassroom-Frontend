@@ -26,7 +26,7 @@ const WhiteboardScreen = (props) => {
   console.log(props.userInfo.email);
   const handleChangeMeeting = () => {
     axios
-      .get(`${config.path.REDIRECT_PATH}?email=${props.userInfo.email}`)
+      .get(`${config.path.REDIRECT_PATH}/schedule_event?email=${props.userInfo.email}`)
       .then((response) => {
         console.log(response.data);
         const linkMeeting = response.data.msg;
