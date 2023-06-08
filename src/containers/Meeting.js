@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import VideoMeet from "../components/Video";
 import Navbar from "../components/MenuBar";
 import ChatScreen from "../components/ChatScreen";
@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { motion as m } from "framer-motion";
+import { current } from "@reduxjs/toolkit";
 
 const socket = io(config.path.SOCKET_PATH);
 
@@ -43,12 +44,14 @@ const Meeting = () => {
   const [role, setRole] = useState(userInfo);
   const [isLoading, setLoading] = useState(true);
   const [redirectLink, setRedirectLink] = useState(null);
+  const dataFetchedRef = useRef(false);
+
 
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     const getData = async () => {
+      console.log("HOW")
       let accountInfor = {};
 
       var params = window.location.href.split("?")[1].split("&");
@@ -74,13 +77,16 @@ const Meeting = () => {
       setRole(accountInfor);
       setLoading(false);
     };
+    if(dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+
     getData();
   }, []);
 
   //----------- Socket for first access to room whether the teacher is on material view
   socket.on("pdf", (pdf) => {
     if (pdf.pdfStatus === 1) {
-      console.log("PDF: " + pdf.pdfId);
+      //console.log("PDF: " + pdf.pdfId);
       setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
@@ -94,7 +100,7 @@ const Meeting = () => {
   socket?.on("set-role", (setting) => {
     if (role.role !== "") {
       if (role.role !== "teacher") {
-        console.log(setting.role);
+        //console.log(setting.role);
         setRole((prev) => {
           return { ...prev, role: setting.role };
         });
@@ -116,12 +122,18 @@ const Meeting = () => {
 
   //--------Socket for check redirect meet
   socket?.on("redirect-meeting", (link) => {
-    //console.log("HE da nha");
+    // console.log("LINK:"+link.linkMeeting)
     if (link.linkMeeting) {
-      setRedirectLink(link.linkMeeting);
+
       setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
+      setRedirectLink(link.linkMeeting);
     }
   });
+
+  socket?.on("cancel-redirect-meeting", (data)=>{
+    console.log("cancel")
+    setRedirectLink(null);
+  })
 
   const toMaterial = () => {
     setScreen({ screen: "material", pdfId: "", linkPdf: "" });
@@ -174,6 +186,11 @@ const Meeting = () => {
     setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
   };
 
+  const returnMeeting = () => {
+    setRedirectLink(null);
+    socket?.emit("remove-redirect-meeting", {message:"Hello"})
+  }
+
   useEffect(() => {
     setScreen({
       ...screen,
@@ -188,7 +205,6 @@ const Meeting = () => {
       </Box>
     );
   }
-
 
   if (screen.screen === "") {
     return (
@@ -291,11 +307,15 @@ const Meeting = () => {
         <div className="virtual">
           <div className="col-container">
             <div className="col-video-container">
-              <VideoMeet
-                height={video_height_material}
-                name={userInfo.username}
-                id={userInfo.roomId}
-              />
+              {redirectLink ? (
+                <Box onClick={returnMeeting}>Click here to return to Meeting Call</Box>
+              ) : (
+                <VideoMeet
+                  height={video_height_material}
+                  name={userInfo.username}
+                  id={userInfo.roomId}
+                />
+              )}
             </div>
             <div className="col-chat-container">
               <ChatScreen
