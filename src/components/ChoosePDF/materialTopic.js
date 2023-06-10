@@ -120,7 +120,7 @@ const MaterialTopic = (props) => {
                 component="label"
                 //startIcon={<ArrowBackIcon />}
                 onClick={props.backTopic}
-                sx={{ marginTop: 1, marginBottom: 0 }}
+                sx={{ marginTop: 1, marginBottom: 0, fontWeight: "600" }}
               >
                 Course List
               </Button>

@@ -142,12 +142,14 @@ const ChoosePDF = (props) => {
             icon={<MenuBookIcon />}
             label="E-Books"
             iconPosition="start"
+            sx={{textTransform: "none", fontWeight: "500"}}
             {...a11yProps(0)}
           />
           <Tab
             icon={<TopicIcon />}
             label="Courses"
             iconPosition="start"
+            sx={{textTransform: "none", fontWeight: "500"}}
             {...a11yProps(1)}
           />
         </Tabs>

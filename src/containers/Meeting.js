@@ -72,12 +72,13 @@ const Meeting = () => {
         type: "call",
       });
 
-
+      console.log(data.topicId);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
-      if(data.topicId !== "undefined")
-        getPdf({id: data.topicId})
+      if (data.topicId === "undefined" || data.topicId === undefined)
+        console.log("done");
+      else getPdf({ id: data.topicId });
       setLoading(false);
     };
     if (dataFetchedRef.current) return;
@@ -191,8 +192,7 @@ const Meeting = () => {
   const returnMeeting = () => {
     setRedirectLink(null);
     socket?.emit("remove-redirect-meeting", { message: "Hello" });
-    if (screen.screen === "whiteboard")
-      toMain();
+    if (screen.screen === "whiteboard") toMain();
   };
 
   useEffect(() => {
@@ -228,14 +228,28 @@ const Meeting = () => {
               <Box
                 className="row-video-container"
                 display="flex"
-                bgcolor="#ded5d8"
                 alignItems="center"
                 justifyContent="center"
+                sx={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)), url('https://cdn.pixabay.com/photo/2019/11/06/11/16/page-4605867_1280.png')",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: `no-repeat`,
+                  backgroundSize: `100% 100%`,
+                }}
               >
                 {userInfo.role === "teacher" ? (
-                  <Typography onClick={returnMeeting} sx={{ cursor: "pointer" }}>
-                    Click here to return to Meeting Call{" "}
-                  </Typography>
+                  <Box
+                    onClick={returnMeeting}
+                    sx={{
+                      cursor: "pointer",
+                      fontWeight: "500",
+                      fontSize: "1.5rem",
+                      color: "blue",
+                    }}
+                  >
+                    Return to Meeting Call{" "}
+                  </Box>
                 ) : (
                   <Typography>Video is delaying</Typography>
                 )}
@@ -280,17 +294,26 @@ const Meeting = () => {
         />
         <div className="virtual">
           <div className="col-container">
-          {redirectLink ? (
+            {redirectLink ? (
               <Box
                 className="col-video-container"
                 display="flex"
-                bgcolor="#ded5d8"
                 alignItems="center"
                 justifyContent="center"
+                sx={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)), url('https://cdn.pixabay.com/photo/2019/11/06/11/16/page-4605867_1280.png')",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: `no-repeat`,
+                  backgroundSize: `100% 100%`,
+                }}
               >
                 {userInfo.role === "teacher" ? (
-                  <Typography onClick={returnMeeting} sx={{ cursor: "pointer" }}>
-                    Click here to return to Meeting Call{" "}
+                  <Typography
+                    onClick={returnMeeting}
+                    sx={{ cursor: "pointer", color: "blue", fontWeight: "500" }}
+                  >
+                    Return to Meeting Call{" "}
                   </Typography>
                 ) : (
                   <Typography>Video is delaying</Typography>
@@ -346,17 +369,26 @@ const Meeting = () => {
         />
         <div className="virtual">
           <div className="col-container">
-          {redirectLink ? (
+            {redirectLink ? (
               <Box
                 className="col-video-container"
                 display="flex"
-                bgcolor="#ded5d8"
                 alignItems="center"
                 justifyContent="center"
+                sx={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)), url('https://cdn.pixabay.com/photo/2019/11/06/11/16/page-4605867_1280.png')",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: `no-repeat`,
+                  backgroundSize: `100% 100%`,
+                }}
               >
                 {userInfo.role === "teacher" ? (
-                  <Typography onClick={returnMeeting} sx={{ cursor: "pointer" }}>
-                    Click here to return to Meeting Call{" "}
+                  <Typography
+                    onClick={returnMeeting}
+                    sx={{ cursor: "pointer", color: "blue", fontWeight: "500" }}
+                  >
+                    Return to Meeting Call{" "}
                   </Typography>
                 ) : (
                   <Typography>Video is delaying</Typography>

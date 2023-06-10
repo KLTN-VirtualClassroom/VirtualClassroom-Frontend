@@ -100,7 +100,7 @@ const MaterialList = (props) => {
           <TableContainer
             component={Paper}
             sx={{
-              maxHeight: 495,
+              maxHeight: 440,
               width: "100%",
               display: "table",
               tableLayout: "fixed",
