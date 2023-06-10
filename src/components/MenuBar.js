@@ -110,7 +110,12 @@ function MenuBar(props) {
         <div className="navbar-left">
           <div className="navbar-brand" onClick={props.getClickedMain}>
             {/* Lettutor */}
-            <img class="logo-img" src="https://meet.lettutor.com/images/watermark.svg" height={"20"} alt="Tutoring logo"></img>
+            <img
+              class="logo-img"
+              src="https://meet.lettutor.com/images/watermark.svg"
+              height={"20.5"}
+              alt="Tutoring logo"
+            ></img>
           </div>
           {(toogleMenu || screenWidth > 842) && (
             <>
@@ -137,19 +142,19 @@ function MenuBar(props) {
                       className="nav-link"
                       onClick={props.getClickedWhiteboard}
                     >
-                      To Meeting
+                      Redirect Meeting
                     </div>
                   )}
-                  { props.pdfOpen  &&
-                  <div className="nav-link">
-                    <Switch
-                      defaultChecked={false}
-                      unCheckedChildren="Disallow Edit PDF"
-                      checkedChildren="Allow Edit PDF"
-                      onChange={(checked) => props.getClickedAllow(checked)}
-                    ></Switch>
-                  </div>
-                  }
+                  {props.pdfOpen && (
+                    <div className="nav-link">
+                      <Switch
+                        defaultChecked={false}
+                        unCheckedChildren="Disallow Edit PDF"
+                        checkedChildren="Allow Edit PDF"
+                        onChange={(checked) => props.getClickedAllow(checked)}
+                      ></Switch>
+                    </div>
+                  )}
                   {/* {recordStatus === "recording" ? (
                     <div className="nav-link">
                       <div className="navbar-record">
@@ -350,18 +355,21 @@ function MenuBar(props) {
         <div className="navbar-right">
           {/* <div className="nav-link-end" onClick="history.back()"> */}
           {screenWidth > 842 && (
-            <Button
-              sx={{
-                fontSize: "0.8rem",
-                marginRight: 1,
-                color: "red",
-                //fontWeight: "bold",
-                "&:hover": { backgroundColor: "transparent" },
-              }}
-              onClick={EndMeeting}
-            >
-              END MEETING
-            </Button>
+            // <Button
+            //   sx={{
+            //     fontSize: "0.8rem",
+            //     marginRight: 1,
+            //     color: "red",
+            //     //fontWeight: "bold",
+            //     "&:hover": { backgroundColor: "transparent" },
+            //   }}
+            //   onClick={EndMeeting}
+            // >
+            //   END MEETING
+            // </Button>
+            <div className="nav-link-end" onClick={EndMeeting}>
+              End Meeting
+            </div>
           )}
 
           <div>

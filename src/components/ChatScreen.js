@@ -28,9 +28,9 @@ const ChatScreen = forwardRef((props, ref) => {
         title="chat"
         src={chatLink}
         style={{
-          left: position.left,
-          top: position.top,
-          position: position.position,
+          // left: position.left,
+          // top: position.top,
+          // position: position.position,
           height: "100%",
         }}
       />

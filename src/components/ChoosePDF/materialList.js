@@ -42,13 +42,13 @@ const MaterialList = (props) => {
   let pdfFile = props.pdfFile;
   const [searchFile, setSearchFile] = React.useState(pdfFile);
 
-  React.useEffect(() => { setSearchFile(pdfFile)}, [pdfFile] )
-
-
+  React.useEffect(() => {
+    setSearchFile(pdfFile);
+  }, [pdfFile]);
 
   const handleSearch = (event) => {
     const searchTerm = event.target.value;
-   
+
     setSearchFile(
       pdfFile.filter((file, index) =>
         file.fileName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -95,13 +95,23 @@ const MaterialList = (props) => {
           sx={{ width: 200 }}
         />
       </Box>
-      <TableContainer component={Paper} sx={{ maxHeight: 495 }}>
-        <Table
-          stickyHeader
-          sx={{ minWidth: 700 }}
-          aria-label="customized table"
-        >
-          {/* <TableHead>
+      <Box sx={{ overflow: "auto" }}>
+        <Box sx={{ width: "100%", display: "table", tableLayout: "fixed" }}>
+          <TableContainer
+            component={Paper}
+            sx={{
+              maxHeight: 495,
+              width: "100%",
+              display: "table",
+              tableLayout: "fixed",
+            }}
+          >
+            <Table
+              stickyHeader
+              sx={{ minWidth: 700 }}
+              aria-label="customized table"
+            >
+              {/* <TableHead>
             <TableRow>
               <StyledTableCell>File name</StyledTableCell>
               <StyledTableCell>Dates</StyledTableCell>
@@ -110,25 +120,30 @@ const MaterialList = (props) => {
               <StyledTableCell>&nbsp;</StyledTableCell>
             </TableRow>
           </TableHead> */}
-          <TableBody>
-            {searchFile.map((row) => (
-              <StyledTableRow key={row.fileId}>
-                <StyledTableCell component="th" scope="row" sx={{ ml: 3 }}>
-                  {row.fileName}
-                </StyledTableCell>
-                <StyledTableCell></StyledTableCell>
-                <StyledTableCell></StyledTableCell>
-                <StyledTableCell></StyledTableCell>
-                <StyledTableCell>
-                  <Button onClick={() => props.getPdf({ id: row.fileId })} sx={{fontWeight: 100}}>
-                    Open
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              <TableBody>
+                {searchFile.map((row) => (
+                  <StyledTableRow key={row.fileId}>
+                    <StyledTableCell component="th" scope="row" sx={{ ml: 3 }}>
+                      {row.fileName}
+                    </StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell>
+                      <Button
+                        onClick={() => props.getPdf({ id: row.fileId })}
+                        sx={{ fontWeight: 100 }}
+                      >
+                        Open
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
     </>
   );
 };

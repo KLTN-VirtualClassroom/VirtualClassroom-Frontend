@@ -21,6 +21,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { motion as m } from "framer-motion";
 import { current } from "@reduxjs/toolkit";
+import { Typography } from "@mui/material";
 
 const socket = io(config.path.SOCKET_PATH);
 
@@ -46,12 +47,11 @@ const Meeting = () => {
   const [redirectLink, setRedirectLink] = useState(null);
   const dataFetchedRef = useRef(false);
 
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getData = async () => {
-      console.log("HOW")
+      console.log("HOW");
       let accountInfor = {};
 
       var params = window.location.href.split("?")[1].split("&");
@@ -72,12 +72,15 @@ const Meeting = () => {
         type: "call",
       });
 
+
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
       setRole(accountInfor);
+      if(data.topicId !== "undefined")
+        getPdf({id: data.topicId})
       setLoading(false);
     };
-    if(dataFetchedRef.current) return;
+    if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
     getData();
@@ -124,16 +127,15 @@ const Meeting = () => {
   socket?.on("redirect-meeting", (link) => {
     // console.log("LINK:"+link.linkMeeting)
     if (link.linkMeeting) {
-
       setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
       setRedirectLink(link.linkMeeting);
     }
   });
 
-  socket?.on("cancel-redirect-meeting", (data)=>{
-    console.log("cancel")
+  socket?.on("cancel-redirect-meeting", (data) => {
+    console.log("cancel");
     setRedirectLink(null);
-  })
+  });
 
   const toMaterial = () => {
     setScreen({ screen: "material", pdfId: "", linkPdf: "" });
@@ -188,8 +190,10 @@ const Meeting = () => {
 
   const returnMeeting = () => {
     setRedirectLink(null);
-    socket?.emit("remove-redirect-meeting", {message:"Hello"})
-  }
+    socket?.emit("remove-redirect-meeting", { message: "Hello" });
+    if (screen.screen === "whiteboard")
+      toMain();
+  };
 
   useEffect(() => {
     setScreen({
@@ -220,13 +224,31 @@ const Meeting = () => {
         />
         <div className="no">
           <div className="row-container">
-            <div className="row-video-container">
-              <VideoMeet
-                height={video_height_material}
-                name={userInfo.username}
-                id={userInfo.roomId}
-              />
-            </div>
+            {redirectLink ? (
+              <Box
+                className="row-video-container"
+                display="flex"
+                bgcolor="#ded5d8"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {userInfo.role === "teacher" ? (
+                  <Typography onClick={returnMeeting} sx={{ cursor: "pointer" }}>
+                    Click here to return to Meeting Call{" "}
+                  </Typography>
+                ) : (
+                  <Typography>Video is delaying</Typography>
+                )}
+              </Box>
+            ) : (
+              <div className="row-video-container">
+                <VideoMeet
+                  height={video_height_material}
+                  name={userInfo.username}
+                  id={userInfo.roomId}
+                />{" "}
+              </div>
+            )}
             <div className="row-chat-container">
               <ChatScreen
                 initial={{ y: "100%" }}
@@ -258,13 +280,31 @@ const Meeting = () => {
         />
         <div className="virtual">
           <div className="col-container">
-            <div className="col-video-container">
-              <VideoMeet
-                height={video_height_material}
-                name={userInfo.username}
-                id={userInfo.roomId}
-              />
-            </div>
+          {redirectLink ? (
+              <Box
+                className="col-video-container"
+                display="flex"
+                bgcolor="#ded5d8"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {userInfo.role === "teacher" ? (
+                  <Typography onClick={returnMeeting} sx={{ cursor: "pointer" }}>
+                    Click here to return to Meeting Call{" "}
+                  </Typography>
+                ) : (
+                  <Typography>Video is delaying</Typography>
+                )}
+              </Box>
+            ) : (
+              <div className="col-video-container">
+                <VideoMeet
+                  height={video_height_material}
+                  name={userInfo.username}
+                  id={userInfo.roomId}
+                />{" "}
+              </div>
+            )}
             <div className="col-chat-container">
               <ChatScreen
                 initial={{ y: "100%" }}
@@ -306,17 +346,31 @@ const Meeting = () => {
         />
         <div className="virtual">
           <div className="col-container">
-            <div className="col-video-container">
-              {redirectLink ? (
-                <Box onClick={returnMeeting}>Click here to return to Meeting Call</Box>
-              ) : (
+          {redirectLink ? (
+              <Box
+                className="col-video-container"
+                display="flex"
+                bgcolor="#ded5d8"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {userInfo.role === "teacher" ? (
+                  <Typography onClick={returnMeeting} sx={{ cursor: "pointer" }}>
+                    Click here to return to Meeting Call{" "}
+                  </Typography>
+                ) : (
+                  <Typography>Video is delaying</Typography>
+                )}
+              </Box>
+            ) : (
+              <div className="col-video-container">
                 <VideoMeet
                   height={video_height_material}
                   name={userInfo.username}
                   id={userInfo.roomId}
-                />
-              )}
-            </div>
+                />{" "}
+              </div>
+            )}
             <div className="col-chat-container">
               <ChatScreen
                 initial={{ y: "100%" }}

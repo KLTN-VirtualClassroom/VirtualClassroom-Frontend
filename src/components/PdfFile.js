@@ -13,7 +13,7 @@ const PDFFile = (props) => {
   console.log("Link: " + props.linkPdf + " " + props.role);
 
   return (
-    <Box width={"100%"} height={"100%"}>
+    <Box  height={"100%"}>
       <m.iframe
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}

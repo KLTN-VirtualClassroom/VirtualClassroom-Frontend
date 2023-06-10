@@ -23,12 +23,15 @@
     display: flex;
     flex-direction: row-reverse;
     width: 100%;
+    /* flex-wrap: wrap; */
+    overflow: hidden;
     /* background-color: #f7faf9; */
 }
 
 .row-container {
     display: flex;
     flex-direction: row;  
+    flex-wrap: wrap;   
     height: 100%; 
 
 }
@@ -46,20 +49,24 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;   
-    height: 100%;
+    height: 93.02vh;
+    /* overflow: hidden; */
 }
 
 .col-video-container{
-    flex: 1 1 auto;
-    height: 40vh
+    flex: 2 1 auto;
+    /* height: 40vh; */
+    /* overflow: hidden; */
+
 }
 
 .col-chat-container{
-    flex: 3 0 auto;
-    height: 52vh
+    flex: 5 1 auto;
+    /* height: 54vh; */
+    /* overflow: hidden; */
 }
 
 .third-container{
-    height: 92vh;
-    width: 100%;
+    height: 93vh;
+    width: 85%;
 }
