@@ -11,7 +11,6 @@ import axios from "axios";
 import { memo } from "react";
 import {
   setAccountInfo,
-  setAccountStatus,
   setAccountRole,
 } from "../redux/slices/accountSlice.js";
 
@@ -20,8 +19,12 @@ import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { motion as m } from "framer-motion";
-import { current } from "@reduxjs/toolkit";
 import { Typography } from "@mui/material";
+import {
+  useGetCourseListMutation,
+  useGetTopicListMutation,
+  useGetPersonalMaterialMutation,
+} from "../assets/materialApi.js";
 
 const socket = io(config.path.SOCKET_PATH);
 
@@ -45,6 +48,9 @@ const Meeting = () => {
   const [role, setRole] = useState(userInfo);
   const [isLoading, setLoading] = useState(true);
   const [redirectLink, setRedirectLink] = useState(null);
+  const [getPersonalPdf] = useGetPersonalMaterialMutation();
+  const [getPdfCourse] = useGetCourseListMutation();
+  const [getPdfTopic] = useGetTopicListMutation();
   const dataFetchedRef = useRef(false);
 
   const dispatch = useDispatch();
@@ -72,6 +78,10 @@ const Meeting = () => {
         type: "call",
       });
 
+      // const listMaterial = await getPersonalPdf(userInfo.id);
+      // const listCourse = await getPdfCourse();
+      // const listTopic = await getPdfTopic();
+
       console.log(data.topicId);
       dispatch(setAccountInfo(accountInfor));
       setUserInfo(accountInfor);
@@ -97,7 +107,7 @@ const Meeting = () => {
         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
       });
     }
-    if (pdf.pdfStatus === 0) setScreen({ screen: "", linkPdf: "", pdfId: "" });
+    if (pdf.pdfStatus === 0 && redirectLink === null) setScreen({ screen: "", linkPdf: "", pdfId: "" });
   });
 
   //----------- Socket for first access to room whether the teacher is allow edit pdf
@@ -126,10 +136,13 @@ const Meeting = () => {
 
   //--------Socket for check redirect meet
   socket?.on("redirect-meeting", (link) => {
-    // console.log("LINK:"+link.linkMeeting)
     if (link.linkMeeting) {
-      setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
+      console.log("LINK:"+link.linkMeeting)
+
       setRedirectLink(link.linkMeeting);
+      setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
+      console.log("screen cmm " +screen.screen)
+
     }
   });
 
@@ -209,6 +222,7 @@ const Meeting = () => {
       </Box>
     );
   }
+
 
   if (screen.screen === "") {
     return (

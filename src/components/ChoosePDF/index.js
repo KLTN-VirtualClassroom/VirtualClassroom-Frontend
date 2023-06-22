@@ -62,7 +62,6 @@ const ChoosePDF = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { getPdf } = props;
-  const dispatch = useDispatch();
 
   const handleUploadPdf = (event) => {
     const selectedFile = event.target.files[0];

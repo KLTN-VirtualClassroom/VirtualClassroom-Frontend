@@ -74,7 +74,7 @@ const MaterialListTopic = (props) => {
           component="label"
           startIcon={<ArrowBackIcon />}
           onClick={props.backTopic}
-          sx={{ marginTop: 1, marginBottom: 0 }}
+          sx={{ marginTop: 1, marginBottom: 0, fontWeight: 500 }}
         >
           Back
         </Button>
@@ -114,14 +114,14 @@ const MaterialListTopic = (props) => {
               <TableBody>
                 {searchFile.map((row) => (
                   <StyledTableRow key={row.fileId}>
-                    <StyledTableCell component="th" scope="row" sx={{ ml: 3 }}>
+                    <StyledTableCell component="th" scope="row" sx={{ ml: 3, fontWeight: 500 }}>
                       {row.fileName}
                     </StyledTableCell>
                     <StyledTableCell></StyledTableCell>
                     <StyledTableCell></StyledTableCell>
                     <StyledTableCell></StyledTableCell>
                     <StyledTableCell>
-                      <Button onClick={() => props.getPdf({ id: row.fileId })}>
+                      <Button sx={{fontWeight: 500}} onClick={() => props.getPdf({ id: row.fileId })}>
                         Open
                       </Button>
                     </StyledTableCell>

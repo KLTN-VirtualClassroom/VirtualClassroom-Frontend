@@ -74,7 +74,7 @@ const MaterialList = (props) => {
           variant="outlined"
           component="label"
           startIcon={<AddIcon />}
-          sx={{ marginTop: 1, marginBottom: 0 }}
+          sx={{ marginTop: 1, marginBottom: 0, fontWeight: "bold" }}
         >
           Upload File
           <input type="file" hidden onChange={props.handleUploadPdf} />
@@ -123,7 +123,7 @@ const MaterialList = (props) => {
               <TableBody>
                 {searchFile.map((row) => (
                   <StyledTableRow key={row.fileId}>
-                    <StyledTableCell component="th" scope="row" sx={{ ml: 3 }}>
+                    <StyledTableCell component="th" scope="row" sx={{ ml: 3, fontWeight: 500 }}>
                       {row.fileName}
                     </StyledTableCell>
                     <StyledTableCell></StyledTableCell>
@@ -132,7 +132,7 @@ const MaterialList = (props) => {
                     <StyledTableCell>
                       <Button
                         onClick={() => props.getPdf({ id: row.fileId })}
-                        sx={{ fontWeight: 100 }}
+                        sx={{ fontWeight: 500 }}
                       >
                         Open
                       </Button>
