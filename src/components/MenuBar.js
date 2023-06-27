@@ -10,6 +10,11 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { styled } from "@mui/system";
 import { IconButton, Button } from "@mui/material";
 import { memo } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const StyledPlayIcon = styled(PlayArrowIcon, {
   name: "StyledPlayIcon",
@@ -33,6 +38,7 @@ function MenuBar(props) {
   const [recordStatus, setRecordStatus] = useState(null);
   const [toogleMenu, setToogleMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [exactEnding, setExactEnding] = useState(false);
 
   const startRecord = async () => {
     await startRecording();
@@ -42,14 +48,12 @@ function MenuBar(props) {
   const pauseRecord = async () => {
     await pauseRecording();
     console.log(status);
-
     //setRecordStatus("pausing");
   };
 
   const resumeRecord = async () => {
     await resumeRecording();
     console.log(status);
-
     //setRecordStatus("recording");
   };
 
@@ -73,8 +77,20 @@ function MenuBar(props) {
     //setRecordStatus(null);
   };
 
+  const openExactEnding = () => {
+    setExactEnding(true);
+  };
+  const closeExactEnding = () => {
+    setExactEnding(false);
+  };
+
   const EndMeeting = () => {
+    const currentLink = window.location.href;
     sessionStorage.clear();
+    window.history.go(-1);
+    if (window.location.href === currentLink) window.history.go(-1);
+
+    // window.location.href = 'http://localhost:3001';
     console.log("END");
   };
 
@@ -211,7 +227,7 @@ function MenuBar(props) {
                     <div
                       className="nav-link"
                       style={{ color: "red" }}
-                      onClick={EndMeeting}
+                      onClick={openExactEnding}
                     >
                       End Meeting
                     </div>
@@ -367,7 +383,7 @@ function MenuBar(props) {
             // >
             //   END MEETING
             // </Button>
-            <div className="nav-link-end" onClick={EndMeeting}>
+            <div className="nav-link-end" onClick={openExactEnding}>
               End Meeting
             </div>
           )}
@@ -380,6 +396,32 @@ function MenuBar(props) {
           {/* <a class="nav-link" href="#">Copy link</a> */}
         </div>
       </nav>
+
+      <Dialog
+        open={exactEnding}
+        onClose={closeExactEnding}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ color: "lightcoral", fontWeight: "bold" }}
+        >
+          {"Kết thúc lớp học"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{ color: "blue" }}
+          >
+            Bạn có chắc muốn kết thúc lớp học?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeExactEnding}>Hủy</Button>
+          <Button onClick={EndMeeting}>Kết thúc</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

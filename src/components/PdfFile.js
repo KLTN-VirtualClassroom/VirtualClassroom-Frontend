@@ -11,14 +11,16 @@ import Tooltip from "@mui/material/Tooltip";
 
 const PDFFile = (props) => {
   console.log("Link: " + props.linkPdf + " " + props.role);
-
+  const handleGoBack = () => {
+    window.history.back();
+  };
   return (
     <Box  height={"100%"}>
       <m.iframe
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
-        key={new Date()}
+        key={props.linkPdf}
         src={`${props.linkPdf}/${props.roomId}?roomId=${props.roomId}`}
         title="pdfframe"
         height="100%"

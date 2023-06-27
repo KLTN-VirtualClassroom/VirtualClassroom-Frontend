@@ -18,8 +18,11 @@ const materialSlice = createSlice({
     builder.addMatcher(
       materialApi.endpoints.getPersonalMaterial.matchFulfilled,
       (state, action) => {
-        console.log(action.payload);
-        state = action.payload;
+        return action.payload;
+        // for(let i=0; i<action.payload.length; i++)
+        //   state.push(action.payload[i])
+        // console.log(action.payload);
+        // state = action.payload;
       }
     );
   },

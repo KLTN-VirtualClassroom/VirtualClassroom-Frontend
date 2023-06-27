@@ -15,7 +15,8 @@ const topicSlice = createSlice({
     builder.addMatcher(
       materialApi.endpoints.getTopicList.matchFulfilled,
       (state, action) => {
-        state = action.payload;
+        return action.payload;
+        
       }
     );
   },

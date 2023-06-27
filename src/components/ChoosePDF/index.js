@@ -21,6 +21,8 @@ import {
 
 import MaterialList from "./materialList";
 import MaterialTopic from "./materialTopic";
+import { useSelector } from "react-redux";
+
 import config from "../../config/config";
 
 function TabPanel(props) {
@@ -51,10 +53,17 @@ function a11yProps(index) {
 }
 
 const ChoosePDF = (props) => {
+  console.log();
   const [value, setValue] = React.useState(0);
-  const [pdfFile, setPdfFile] = React.useState([]);
-  const [pdfTopic, setPdfTopic] = React.useState([]);
-  const [pdfCourse, setPdfCourse] = React.useState([]);
+  const [pdfFile, setPdfFile] = React.useState(
+    useSelector((state) => state.material)
+  );
+  const [pdfTopic, setPdfTopic] = React.useState(
+    useSelector((state) => state.topic)
+  );
+  const [pdfCourse, setPdfCourse] = React.useState(
+    useSelector((state) => state.course)
+  );
   const [getPersonalPdf] = useGetPersonalMaterialMutation();
   const [getPdfCourse] = useGetCourseListMutation();
   const [getPdfTopic] = useGetTopicListMutation();
@@ -125,7 +134,8 @@ const ChoosePDF = (props) => {
       // setPdfTopic(pdfTopic.data);
       setIsLoading(false);
     };
-    getData();
+    if (pdfCourse.length === 0 && pdfTopic.length === 0) getData();
+    else setIsLoading(false);
   }, []);
 
   return (
@@ -141,14 +151,14 @@ const ChoosePDF = (props) => {
             icon={<MenuBookIcon />}
             label="E-Books"
             iconPosition="start"
-            sx={{textTransform: "none", fontWeight: "500"}}
+            sx={{ textTransform: "none", fontWeight: "500" }}
             {...a11yProps(0)}
           />
           <Tab
             icon={<TopicIcon />}
             label="Courses"
             iconPosition="start"
-            sx={{textTransform: "none", fontWeight: "500"}}
+            sx={{ textTransform: "none", fontWeight: "500" }}
             {...a11yProps(1)}
           />
         </Tabs>
