@@ -35,17 +35,18 @@ const chat_height = "93vh";
 const chat_height_material = "63vh";
 
 const Meeting = () => {
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    password: "",
-    email: "",
-    role: "",
-    roomId: "",
-    id: "",
-    authToken: "",
-  });
+  // const [userInfo, setUserInfo] = useState({
+  //   username: "",
+  //   password: "",
+  //   email: "",
+  //   role: "",
+  //   roomId: "",
+  //   id: "",
+  //   authToken: "",
+  // });
+  const [userInfo, setUserInfo] = useState({});
   const [screen, setScreen] = useState({ screen: "", linkPdf: "", pdfId: "" });
-  const [role, setRole] = useState(userInfo);
+  const [role, setRole] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [redirectLink, setRedirectLink] = useState(null);
   const [getPersonalPdf] = useGetPersonalMaterialMutation();
@@ -84,11 +85,21 @@ const Meeting = () => {
 
       console.log(data.topicId);
       dispatch(setAccountInfo(accountInfor));
-      setUserInfo(accountInfor);
-      setRole(accountInfor);
+      await setUserInfo(accountInfor);
+      await setRole(accountInfor);
+
       if (data.topicId === "undefined" || data.topicId === undefined)
         console.log("done");
-      else getPdf({ id: data.topicId });
+      else {
+        await axios
+          .get(`${config.path.SERVER_PATH}/topic/getTopicById`, {
+            topicId: data.topicId,
+          })
+          .then((response) => {
+            console.log("FILDE " + response.data[0].fileId);
+            getPdf({ id: response.data[0].fileId });
+          });
+      }
       setLoading(false);
     };
     if (dataFetchedRef.current) return;
@@ -107,7 +118,8 @@ const Meeting = () => {
         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
       });
     }
-    if (pdf.pdfStatus === 0 && redirectLink === null) setScreen({ screen: "", linkPdf: "", pdfId: "" });
+    if (pdf.pdfStatus === 0 && redirectLink === null)
+      setScreen({ screen: "", linkPdf: "", pdfId: "" });
   });
 
   //----------- Socket for first access to room whether the teacher is allow edit pdf
@@ -137,12 +149,8 @@ const Meeting = () => {
   //--------Socket for check redirect meet
   socket?.on("redirect-meeting", (link) => {
     if (link.linkMeeting) {
-      console.log("LINK:"+link.linkMeeting)
-
       setRedirectLink(link.linkMeeting);
       setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
-      console.log("screen cmm " +screen.screen)
-
     }
   });
 
@@ -182,6 +190,11 @@ const Meeting = () => {
   };
 
   const getPdf = (pdf) => {
+    axios.post(
+      `${config.path.SERVER_PATH}/materialstatistic/addMaterialStatistic`,
+      { fileId: pdf.id, dateAccess: new Date() }
+    ).then(function(response){console.log("HJHHHH")});
+
     socket?.emit("pdf-status", {
       status: 1,
       pdfId: pdf.id,
@@ -222,7 +235,6 @@ const Meeting = () => {
       </Box>
     );
   }
-
 
   if (screen.screen === "") {
     return (
