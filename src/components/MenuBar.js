@@ -85,13 +85,18 @@ function MenuBar(props) {
   };
 
   const EndMeeting = () => {
-    const currentLink = window.location.href;
+    const prevLink = window.location.href;
+
     sessionStorage.clear();
     window.history.go(-1);
-    if (window.location.href === currentLink) window.history.go(-1);
-
-    // window.location.href = 'http://localhost:3001';
-    console.log("END");
+    setTimeout(function(){ 
+      if (window.location.href === prevLink) {
+        console.log("ok")
+          EndMeeting();
+      }
+  }, 500);
+    //window.location.href = baseLink
+    console.log(window.history)
   };
 
   const toogleClicked = () => {
