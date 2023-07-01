@@ -136,9 +136,9 @@ const Meeting = () => {
   });
 
   //----------- Socket for check teacher access a pdf file
-  socket?.on("get-pdf-status", (pdf) => {
+  socket?.on("get-pdf-status", async (pdf) => {
     if (pdf.pdfStatus === 1) {
-      setScreen({
+      await setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
         linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
