@@ -96,7 +96,7 @@ const Meeting = () => {
             topicId: data.topicId,
           })
           .then((response) => {
-            console.log("FILDE " + response.data[0].fileId);
+            // console.log("FILDE " + response.data[0].fileId);
             getPdf({ id: response.data[0].fileId });
           });
       }

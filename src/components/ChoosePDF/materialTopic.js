@@ -29,9 +29,7 @@ const MaterialTopic = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [searchCourse, setSearchCourse] = React.useState(props.pdfCourse);
   const data = useSelector(state => state.material);
-  if(data.length > 0)
-  {console.log("DATA CO A NHE")}
-  else   {console.log("DATA DEO CO A NHE"); console.log(data)}
+  
 
   //const dispatch = useDispatch();
 

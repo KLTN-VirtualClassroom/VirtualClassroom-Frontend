@@ -23,12 +23,12 @@ const WhiteboardScreen = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(props.userInfo.email);
+  // console.log(props.userInfo.email);
   const handleChangeMeeting = () => {
     axios
       .get(`${config.path.REDIRECT_PATH}/schedule_event?email=${props.userInfo.email}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const linkMeeting = response.data.msg;
         window.open(linkMeeting);
         setLinkGgMeeting(linkMeeting);

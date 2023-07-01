@@ -53,7 +53,6 @@ function a11yProps(index) {
 }
 
 const ChoosePDF = (props) => {
-  console.log();
   const [value, setValue] = React.useState(0);
   const [pdfFile, setPdfFile] = React.useState(
     useSelector((state) => state.material)
@@ -76,7 +75,7 @@ const ChoosePDF = (props) => {
     const selectedFile = event.target.files[0];
 
     let formData = new FormData();
-    console.log(typeof selectedFile);
+    // console.log(typeof selectedFile);
     formData.append("file", selectedFile);
     formData.append("filename", selectedFile.name);
 

@@ -96,7 +96,7 @@ function MenuBar(props) {
       }
   }, 500);
     //window.location.href = baseLink
-    console.log(window.history)
+    //console.log(window.history)
   };
 
   const toogleClicked = () => {
@@ -129,7 +129,7 @@ function MenuBar(props) {
 
       <nav className="navbar">
         <div className="navbar-left">
-          <div className="navbar-brand" onClick={props.getClickedMain}>
+          <div className="navbar-brand" /*onClick={props.getClickedMain}*/>
             {/* Lettutor */}
             <img
               class="logo-img"
