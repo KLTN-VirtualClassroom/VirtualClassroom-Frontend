@@ -124,7 +124,7 @@ const Meeting = () => {
 
   //----------- Socket for first access to room whether the teacher is allow edit pdf
   socket?.on("set-role", (setting) => {
-    if (role.role !== "") {
+    if (role.role !== "" && role.role!==undefined) {
       if (role.role !== "teacher") {
         //console.log(setting.role);
         setRole((prev) => {
@@ -141,7 +141,7 @@ const Meeting = () => {
       await setScreen({
         screen: "material",
         pdfId: pdf.pdfId,
-        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${screen.pdfId}`,
+        linkPdf: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.pdfId}`,
       });
     }
   });
