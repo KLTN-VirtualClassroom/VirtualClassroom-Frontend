@@ -77,6 +77,7 @@ const Meeting = () => {
       socket?.emit("get-room-info", {
         roomId: accountInfor.roomId,
         type: "call",
+        username: accountInfor.username
       });
 
       // const listMaterial = await getPersonalPdf(userInfo.id);
