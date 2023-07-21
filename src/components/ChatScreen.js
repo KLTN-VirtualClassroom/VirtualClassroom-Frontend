@@ -9,7 +9,7 @@ const ChatScreen = forwardRef((props, ref) => {
   const account = props.userInfo;
 
   const chatLink = `${config.path.CHAT_PATH}/channel/${account.roomId}?layout=embedded&resumeToken=${account.authToken}`;
-  console.log("Link: " + chatLink);
+  // console.log("Link: " + chatLink);
 
   const [position, setPosition] = useState({
     left: "0px",

@@ -11,6 +11,7 @@ const materialSlice = createSlice({
       state = action.payload;
     },
     addMaterial: (state, action) => {
+      console.log(action.payload);
       state.push(action.payload);
     },
   },

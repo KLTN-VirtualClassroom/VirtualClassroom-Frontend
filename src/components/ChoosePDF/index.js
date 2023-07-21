@@ -67,7 +67,9 @@ const ChoosePDF = (props) => {
   const [getPdfCourse] = useGetCourseListMutation();
   const [getPdfTopic] = useGetTopicListMutation();
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const dispatch = useDispatch();
 
   const { getPdf } = props;
 
@@ -88,9 +90,9 @@ const ChoosePDF = (props) => {
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
     }).then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
       const fileUpload = response.data;
-      if (response.status === 200) setPdfFile([fileUpload, ...pdfFile]);
+      if (response.status === 200) {setPdfFile([fileUpload, ...pdfFile]); dispatch(addMaterial(fileUpload))}
     });
   };
 
@@ -98,44 +100,44 @@ const ChoosePDF = (props) => {
     setValue(newValue);
   };
 
-  React.useEffect(() => {
-    const getData = async () => {
-      const listMaterial = await getPersonalPdf(props.userInfo.id);
-      const listCourse = await getPdfCourse();
-      const listTopic = await getPdfTopic();
-      setPdfFile(listMaterial.data);
-      setPdfCourse(listCourse.data);
-      setPdfTopic(listTopic.data);
+  // React.useEffect(() => {
+  //   const getData = async () => {
+  //     const listMaterial = await getPersonalPdf(props.userInfo.id);
+  //     const listCourse = await getPdfCourse();
+  //     const listTopic = await getPdfTopic();
+  //     setPdfFile(listMaterial.data);
+  //     setPdfCourse(listCourse.data);
+  //     setPdfTopic(listTopic.data);
 
-      //setPdfFile(listMaterial)
-      // let pdfPersonal = [];
-      // let pdfCourse = [];
-      // let pdfTopic = [];
-      // axios.all([
-      //   (pdfPersonal = await axios.get(
-      //     `${config.path.SERVER_PATH}/material/getPersonalMaterial?teacherID=${props.userInfo.id}`
-      //   )),
-      //   (pdfCourse = await axios.get(
-      //     `${config.path.SERVER_PATH}/course/getCourse`
-      //   )),
-      //   (pdfTopic = await axios.get(
-      //     `${config.path.SERVER_PATH}/topic/getTopicByCourse`
-      //   )),
-      // ]);
-      // // const materials = [...pdfPersonal.data, ...pdfTopic.data];
-      // const materials = [...pdfPersonal.data];
+  //     //setPdfFile(listMaterial)
+  //     // let pdfPersonal = [];
+  //     // let pdfCourse = [];
+  //     // let pdfTopic = [];
+  //     // axios.all([
+  //     //   (pdfPersonal = await axios.get(
+  //     //     `${config.path.SERVER_PATH}/material/getPersonalMaterial?teacherID=${props.userInfo.id}`
+  //     //   )),
+  //     //   (pdfCourse = await axios.get(
+  //     //     `${config.path.SERVER_PATH}/course/getCourse`
+  //     //   )),
+  //     //   (pdfTopic = await axios.get(
+  //     //     `${config.path.SERVER_PATH}/topic/getTopicByCourse`
+  //     //   )),
+  //     // ]);
+  //     // // const materials = [...pdfPersonal.data, ...pdfTopic.data];
+  //     // const materials = [...pdfPersonal.data];
 
-      // dispatch(getMaterial(materials));
-      // dispatch(getCourseList(pdfCourse.data));
-      // dispatch(getTopicList(pdfTopic.data));
-      // setPdfFile(materials);
-      // setPdfCourse(pdfCourse.data);
-      // setPdfTopic(pdfTopic.data);
-      setIsLoading(false);
-    };
-    if (pdfCourse.length === 0 && pdfTopic.length === 0) getData();
-    else setIsLoading(false);
-  }, []);
+  //     // dispatch(getMaterial(materials));
+  //     // dispatch(getCourseList(pdfCourse.data));
+  //     // dispatch(getTopicList(pdfTopic.data));
+  //     // setPdfFile(materials);
+  //     // setPdfCourse(pdfCourse.data);
+  //     // setPdfTopic(pdfTopic.data);
+  //     setIsLoading(false);
+  //   };
+  //   if (pdfCourse.length === 0 && pdfTopic.length === 0) getData();
+  //   else setIsLoading(false);
+  // }, []);
 
   return (
     <Box sx={{ width: "100%", p: 0 }}>

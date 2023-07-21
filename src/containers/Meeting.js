@@ -101,6 +101,9 @@ const Meeting = () => {
             getPdf({ id: response.data[0].fileId });
           });
       }
+      const listMaterial = await getPersonalPdf("6nJHajizdabLz9xrr");
+      const listCourse = await getPdfCourse();
+      const listTopic = await getPdfTopic();
       setLoading(false);
     };
     if (dataFetchedRef.current) return;

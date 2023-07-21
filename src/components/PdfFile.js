@@ -11,7 +11,7 @@ import { memo } from "react";
 const PDFFile = (props) => {
   //console.log("Link: " + props.linkPdf + " " + props.role);
   const linkPdf = props.linkPdf.replace("undefined", props.role);
-  console.log("Link2: " + linkPdf);
+  // console.log("Link2: " + linkPdf);
 
 
   return (
