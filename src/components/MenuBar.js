@@ -4,6 +4,7 @@ import { useReactMediaRecorder } from "react-media-recorder";
 import { useState, useEffect } from "react";
 
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import GoogleIcon from "@mui/icons-material/Google";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -15,6 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import MeetIcon from "../statics/google-meet.svg";
 
 const StyledPlayIcon = styled(PlayArrowIcon, {
   name: "StyledPlayIcon",
@@ -89,12 +91,12 @@ function MenuBar(props) {
 
     sessionStorage.clear();
     window.history.go(-1);
-    setTimeout(function(){ 
+    setTimeout(function () {
       if (window.location.href === prevLink) {
-        console.log("ok")
-          EndMeeting();
+        console.log("ok");
+        EndMeeting();
       }
-  }, 500);
+    }, 500);
     //window.location.href = baseLink
     //console.log(window.history)
   };
@@ -144,7 +146,7 @@ function MenuBar(props) {
                 <div className="navbar-animate">
                   {props.screen === "material" ? (
                     <div className="nav-link" onClick={props.getClickedMain}>
-                      Video Call
+                      Full Screen Video
                     </div>
                   ) : (
                     <div
@@ -156,15 +158,26 @@ function MenuBar(props) {
                   )}
                   {props.screen === "whiteboard" ? (
                     <div className="nav-link" onClick={props.getClickedMain}>
-                      Video Call
+                      Full Screen Video
                     </div>
                   ) : (
-                    <div
-                      className="nav-link"
-                      onClick={props.getClickedWhiteboard}
-                    >
-                      Redirect Meeting
-                    </div>
+                    <>
+                      {props.pdfOpen && (
+                        <div
+                          className="nav-link"
+                          onClick={props.getClickedListMaterial}
+                        >
+                          Material
+                        </div>
+                      )}
+
+                      {/* <div
+                        className="nav-link"
+                        onClick={props.getClickedWhiteboard}
+                      >
+                        Redirect Meeting
+                      </div> */}
+                    </>
                   )}
                   {props.pdfOpen && (
                     <div className="nav-link">
@@ -229,6 +242,35 @@ function MenuBar(props) {
                   )} */}
 
                   {screenWidth <= 842 && (
+                    <>
+                      <div
+                        className="nav-link"
+                        onClick={props.getClickedWhiteboard}
+                      >
+                        <img
+                          src={MeetIcon}
+                          height="25"
+                          style={{
+                            cursor: "pointer",
+                            marginTop: 1,
+                          }}
+                          alt="Google Meet"
+                        />
+                      </div>
+                      <div
+                        className="nav-link"
+                        style={{ color: "red" }}
+                        onClick={openExactEnding}
+                      >
+                        End Meeting
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <>
+                  {" "}
+                  {screenWidth <= 842 && (
                     <div
                       className="nav-link"
                       style={{ color: "red" }}
@@ -237,9 +279,7 @@ function MenuBar(props) {
                       End Meeting
                     </div>
                   )}
-                </div>
-              ) : (
-                <></>
+                </>
                 //                 <div className="navbar-animate">
                 //                   <div className="nav-link" onClick={props.getClickedMaterial}>
                 //                     Material
@@ -388,9 +428,24 @@ function MenuBar(props) {
             // >
             //   END MEETING
             // </Button>
-            <div className="nav-link-end" onClick={openExactEnding}>
-              End Meeting
-            </div>
+            <>
+              {props.role === "teacher" &&
+              <div
+                className="nav-link-end"
+                onClick={props.getClickedWhiteboard}
+              >
+                <img
+                  src={MeetIcon}
+                  height="25"
+                  style={{ cursor: "pointer", marginTop: 5, marginRight: 92 }}
+                  alt="Google Meet"
+                />
+              </div>
+}
+              <div className="nav-link-end" onClick={openExactEnding}>
+                End Meeting
+              </div>
+            </>
           )}
 
           <div>
@@ -412,7 +467,7 @@ function MenuBar(props) {
           id="alert-dialog-title"
           sx={{ color: "lightcoral", fontWeight: "bold" }}
         >
-          {"Kết thúc lớp học"}
+          {"End Meeting"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText
@@ -423,8 +478,8 @@ function MenuBar(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeExactEnding}>Hủy</Button>
-          <Button onClick={EndMeeting}>Kết thúc</Button>
+          <Button onClick={closeExactEnding}>Cancel</Button>
+          <Button onClick={EndMeeting}>END</Button>
         </DialogActions>
       </Dialog>
     </div>

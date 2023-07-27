@@ -1,5 +1,9 @@
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import config from "../config/config";
+import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
+import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
+import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 
 import React, { useEffect, useState, forwardRef, useRef } from "react";
 import { memo } from "react";
@@ -30,7 +34,6 @@ const Videocall = forwardRef((props, ref) => {
         },
         parentNode: document.getElementById("call-meet"),
       };
-      console.log("IFAMMA");
       const api = new window.JitsiMeetExternalAPI(domain, options);
     };
 
@@ -73,7 +76,64 @@ const Videocall = forwardRef((props, ref) => {
   //   </script>
   // `;
 
-  return <div id="call-meet" style={{ height: "100%" }}></div>;
+  return (
+    <Box sx={{ position: "relative", height: "100%" }}>
+      {props.pdfId ? (
+        props.screen === "" ? (
+          <Box
+            sx={{
+              position: "absolute",
+              left: "5px",
+              top: "1vh",
+              opacity: "0.3",
+              "&:hover": {
+                opacity: "0.6",
+              },
+            }}
+          >
+            <Fab size="small" onClick={props.toMaterial}>
+              <ZoomInMapIcon />
+            </Fab>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              position: "absolute",
+              right: "5px",
+              top: "1vh",
+              opacity: "0.3",
+              "&:hover": {
+                opacity: "0.6",
+              },
+            }}
+          >
+            <Fab size="small" onClick={props.toFullVideo}>
+              <ZoomOutMapIcon />
+            </Fab>
+          </Box>
+        )
+      ) : (
+        props.screen !== "" && (
+          <Box
+            sx={{
+              position: "absolute",
+              right: "5px",
+              top: "1vh",
+              opacity: "0.3",
+              "&:hover": {
+                opacity: "0.6",
+              },
+            }}
+          >
+            <Fab size="small" onClick={props.toFullVideo}>
+              <ZoomOutMapIcon />
+            </Fab>
+          </Box>
+        )
+      )}
+      <div id="call-meet" style={{ height: "100%" }}></div>
+    </Box>
+  );
 });
 
 export default memo(Videocall);

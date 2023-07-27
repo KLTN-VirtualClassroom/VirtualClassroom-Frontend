@@ -13,11 +13,13 @@ import {
   setAccountInfo,
   setAccountRole,
 } from "../redux/slices/accountSlice.js";
+import { setStatus, removeStatus } from "../redux/slices/pdfSlice";
 
 import "../Style/App.css";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import NotiDialog from "../components/NotiDialog.js";
 import { motion as m } from "framer-motion";
 import { Typography } from "@mui/material";
 import {
@@ -49,6 +51,7 @@ const Meeting = () => {
   const [role, setRole] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [redirectLink, setRedirectLink] = useState(null);
+  const [openLink, setOpenLink] = useState(false);
   const [getPersonalPdf] = useGetPersonalMaterialMutation();
   const [getPdfCourse] = useGetCourseListMutation();
   const [getPdfTopic] = useGetTopicListMutation();
@@ -77,7 +80,7 @@ const Meeting = () => {
       socket?.emit("get-room-info", {
         roomId: accountInfor.roomId,
         type: "call",
-        username: accountInfor.username
+        username: accountInfor.username,
       });
 
       // const listMaterial = await getPersonalPdf(userInfo.id);
@@ -112,8 +115,13 @@ const Meeting = () => {
     getData();
   }, []);
 
+  // useEffect(() => {
+  //   if (openLink === 0 && redirectLink !== null) window.open(redirectLink, "_blank", "noreferrer");
+  //   setOpenLink(1);
+  // }, [redirectLink]);
+
   //----------- Socket for first access to room whether the teacher is on material view
-  socket.on("pdf", (pdf) => {
+  socket?.on("pdf", (pdf) => {
     if (pdf.pdfStatus === 1) {
       //console.log("PDF: " + pdf.pdfId);
       setScreen({
@@ -128,7 +136,7 @@ const Meeting = () => {
 
   //----------- Socket for first access to room whether the teacher is allow edit pdf
   socket?.on("set-role", (setting) => {
-    if (role.role !== "" && role.role!==undefined) {
+    if (role.role !== "" && role.role !== undefined) {
       if (role.role !== "teacher") {
         //console.log(setting.role);
         setRole((prev) => {
@@ -151,8 +159,12 @@ const Meeting = () => {
   });
 
   //--------Socket for check redirect meet
-  socket?.on("redirect-meeting", (link) => {
+  socket?.once("redirect-meeting", (link) => {
     if (link.linkMeeting) {
+      console.log("Link la: " + link.linkMeeting);
+      // if(openLink === 0)
+      // window.open(link.linkMeeting, "_blank", "noreferrer")
+      setOpenLink(true);
       setRedirectLink(link.linkMeeting);
       setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
     }
@@ -161,14 +173,29 @@ const Meeting = () => {
   socket?.on("cancel-redirect-meeting", (data) => {
     console.log("cancel");
     setRedirectLink(null);
+    setOpenLink(0);
   });
 
   const toMaterial = () => {
+    // setScreen({ screen: "material", pdfId: "", linkPdf: "" });
+    setScreen({
+      screen: "material",
+      pdfId: screen.pdfId,
+      linkPdf: screen.linkPdf,
+    });
+  };
+
+  const toListMaterial = () => {
     setScreen({ screen: "material", pdfId: "", linkPdf: "" });
+    // setScreen({ screen: "material", pdfId: screen.pdfId, linkPdf: screen.linkPdf });
   };
 
   const toWhiteboard = () => {
-    setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
+    setScreen({
+      screen: "whiteboard",
+      pdfId: screen.pdfId,
+      linkPdf: screen.linkPdf,
+    });
   };
 
   const toMain = () => {
@@ -177,6 +204,10 @@ const Meeting = () => {
       status: 0,
       pdfId: "",
     });
+  };
+
+  const toFullVideo = () => {
+    setScreen({ screen: "", pdfId: screen.pdfId, linkPdf: screen.linkPdf });
   };
 
   const setAllow = (checked) => {
@@ -194,16 +225,25 @@ const Meeting = () => {
   };
 
   const getPdf = (pdf) => {
-    axios.post(
-      `${config.path.SERVER_PATH}/materialstatistic/addMaterialStatistic`,
-      { fileId: pdf.id, dateAccess: new Date() }
-    ).then(function(response){console.log("HJHHHH")});
+    axios
+      .post(
+        `${config.path.SERVER_PATH}/materialstatistic/addMaterialStatistic`,
+        { fileId: pdf.id, dateAccess: new Date() }
+      )
+      .then(function (response) {
+        console.log("HJHHHH");
+      });
 
     socket?.emit("pdf-status", {
       status: 1,
       pdfId: pdf.id,
       socketId: socket.id,
     });
+    dispatch(
+      setStatus({
+        pdfLink: `${config.path.PSPDFKIT_UI_PATH}/documents/${role.role}/${pdf.id}`,
+      })
+    );
     setScreen({
       screen: "material",
       pdfId: pdf.id,
@@ -216,6 +256,7 @@ const Meeting = () => {
       linkMeeting: link,
     });
     setRedirectLink(link);
+
     setScreen({ screen: "whiteboard", pdfId: "", linkPdf: "" });
   };
 
@@ -223,6 +264,14 @@ const Meeting = () => {
     setRedirectLink(null);
     socket?.emit("remove-redirect-meeting", { message: "Hello" });
     if (screen.screen === "whiteboard") toMain();
+  };
+
+  const handleCloseDialog = () => {
+    setOpenLink(false);
+  };
+  const handleRedirectMeeting = () => {
+    window.open(redirectLink);
+    setOpenLink(false);
   };
 
   useEffect(() => {
@@ -254,6 +303,13 @@ const Meeting = () => {
         />
         <div className="no">
           <div className="row-container">
+            {/* {screen.pdfId && (
+              <Box sx={{ position: "absolute", left: "5px", top: "8vh" }}>
+              <Fab size="small" onClick={toMaterial}>
+                <ZoomInMapIcon />
+              </Fab>
+            </Box>
+            )} */}
             {redirectLink ? (
               <Box
                 className="row-video-container"
@@ -290,7 +346,11 @@ const Meeting = () => {
                   height={video_height_material}
                   name={userInfo.username}
                   id={userInfo.roomId}
-                />{" "}
+                  screen={screen.screen}
+                  pdfId={screen.pdfId}
+                  toFullVideo={toFullVideo}
+                  toMaterial={toMaterial}
+                />
               </div>
             )}
             <div className="row-chat-container">
@@ -305,6 +365,11 @@ const Meeting = () => {
             </div>
           </div>
         </div>
+        <NotiDialog
+          open={openLink}
+          handleChangeMeeting={handleRedirectMeeting}
+          handleClose={handleCloseDialog}
+        />
       </div>
     );
   }
@@ -316,6 +381,7 @@ const Meeting = () => {
           getClickedMaterial={toMaterial}
           getClickedWhiteboard={toWhiteboard}
           getClickedMain={toMain}
+          getClickedListMaterial={toListMaterial}
           getClickedAllow={setAllow}
           userInfo={userInfo}
           screen={screen.screen}
@@ -324,6 +390,11 @@ const Meeting = () => {
         />
         <div className="virtual">
           <div className="col-container">
+            {/* <Box sx={{ position: "absolute", right: "5px", top: "8vh" }}>
+              <Fab size="small" onClick={toFullVideo}>
+                <ZoomOutMapIcon />
+              </Fab>
+            </Box> */}
             {redirectLink ? (
               <Box
                 className="col-video-container"
@@ -355,7 +426,10 @@ const Meeting = () => {
                   height={video_height_material}
                   name={userInfo.username}
                   id={userInfo.roomId}
-                />{" "}
+                  screen={screen.screen}
+                  pdfId={screen.pdfId}
+                  toFullVideo={toFullVideo}
+                />
               </div>
             )}
             <div className="col-chat-container">
@@ -377,11 +451,16 @@ const Meeting = () => {
                 role={userInfo.role}
                 linkPdf={screen.linkPdf}
                 roomId={userInfo.roomId}
-                returnPage={toMaterial}
+                returnPage={toListMaterial}
               />
             )}
           </div>
         </div>
+        <NotiDialog
+          open={openLink}
+          handleChangeMeeting={handleRedirectMeeting}
+          handleClose={handleCloseDialog}
+        />
       </div>
     );
   }
@@ -399,6 +478,11 @@ const Meeting = () => {
         />
         <div className="virtual">
           <div className="col-container">
+            {/* <Box sx={{ position: "absolute", right: "5px", top: "8vh" }}>
+              <Fab size="small" onClick={toFullVideo}>
+                <ZoomOutMapIcon />
+              </Fab>
+            </Box> */}
             {redirectLink ? (
               <Box
                 className="col-video-container"
@@ -430,7 +514,10 @@ const Meeting = () => {
                   height={video_height_material}
                   name={userInfo.username}
                   id={userInfo.roomId}
-                />{" "}
+                  screen={screen.screen}
+                  pdfId={screen.pdfId}
+                  toFullVideo={toFullVideo}
+                />
               </div>
             )}
             <div className="col-chat-container">
@@ -449,9 +536,16 @@ const Meeting = () => {
               userInfo={userInfo}
               linkNewMeeting={redirectLink}
               redirectMeeting={redirectMeeting}
+              role={userInfo.role}
+              returnMeeting={returnMeeting}
             />
           </div>
         </div>
+        <NotiDialog
+          open={openLink}
+          handleChangeMeeting={handleRedirectMeeting}
+          handleClose={handleCloseDialog}
+        />
       </div>
     );
   }

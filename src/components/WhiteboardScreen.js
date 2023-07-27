@@ -2,13 +2,19 @@ import * as React from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
 
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 import config from "../config/config";
+import ImageTransfer from "../statics/transfer.png";
+import Link from "@mui/material/Link";
 
 const WhiteboardScreen = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -26,7 +32,9 @@ const WhiteboardScreen = (props) => {
   // console.log(props.userInfo.email);
   const handleChangeMeeting = () => {
     axios
-      .get(`${config.path.REDIRECT_PATH}/schedule_event?email=${props.userInfo.email}`)
+      .get(
+        `${config.path.REDIRECT_PATH}/schedule_event?email=${props.userInfo.email}`
+      )
       .then((response) => {
         // console.log(response.data);
         const linkMeeting = response.data.msg;
@@ -39,30 +47,171 @@ const WhiteboardScreen = (props) => {
 
   if (linkGgMeeting)
     return (
-      <Box
-        display={"flex"}
-        justifyContent={"center"}
-        mt={30}
-        sx={{ fontWeight: "bold", fontSize: 20 }}
-      >
-        Room đã được chuyển hướng đến trang Google Meet khác với đường dẫn:
-        &nbsp;
-        <a href={linkGgMeeting} target="_blank" rel="noopener noreferrer">
-          Click here
-        </a>
+      // <Box
+      //   display={"flex"}
+      //   alignItems={"center"}
+      //   flexDirection={"column"}
+      //   flexWrap={"wrap"}
+      //   gap={5}
+      //   mt={15}
+      //   mx={5}
+      // >
+      //   <Box
+      //     component="img"
+      //     sx={{
+      //       height: 233,
+      //       width: 550,
+      //       maxHeight: { xs: 233, md: 167 },
+      //       maxWidth: { xs: 550, md: 450 },
+      //     }}
+      //     alt="The house from the offer."
+      //     src={ImageTransfer}
+      //   />
+      //   <Box
+      //     // display={"flex"}
+      //     // justifyContent={"center"}
+      //     // mt={30}
+      //     // mr={1}
+      //     // ml={1}
+      //     sx={{ fontWeight: "bold", fontSize: 20 }}
+      //   >
+      //     Room has been redirected to a new Google Meet with this link: &nbsp;
+      //     <a href={linkGgMeeting} target="_blank" rel="noopener noreferrer">
+      //       Click here
+      //     </a>
+      //   </Box>
+      //   {props.role === "teacher" && (
+      //     <Box
+      //       // display={"flex"}
+      //       // justifyContent={"center"}
+      //       // mt={5}
+      //       // mr={1}
+      //       // ml={1}
+      //       sx={{ fontWeight: "bold", fontSize: 20 }}
+      //     >
+      //       Return Meeting Call: &nbsp;
+      //       <Link
+      //         component="a"
+      //         variant="body"
+      //         onClick={props.returnMeeting}
+      //         sx={{ cursor: "pointer" }}
+      //       >
+      //         Click here
+      //       </Link>
+      //       {/* <Button onClick={props.returnMeeting}>
+      //       Click here
+      //     </Button> */}
+      //     </Box>
+      //   )}
+      // </Box>
+      <Box display={"flex"} justifyContent={"center"} mt={15} mx={5}>
+        {/* <Button
+            sx={{ fontWeight: "bold", fontSize: 20 }}
+            onClick={handleClickOpen}
+          >
+            Tạo Google Meet mới
+          </Button> */}
+        <Card sx={{ maxWidth: 600, border: "none", boxShadow: "none", bgcolor: "transparent" }}>
+          <CardMedia
+            component="img"
+            height="140"
+            image={ImageTransfer}
+            alt="lettutor to google meet"
+          />
+          <CardContent sx={{marginTop: "10px" }}>
+            <Box
+              // display={"flex"}
+              // justifyContent={"center"}
+              // mt={3}
+              // mr={1}
+              // ml={1}
+              sx={{ fontWeight: "bold", fontSize: 20 }}
+            >
+              Room has been redirected to Google Meet:
+              &nbsp;
+              <a href={linkGgMeeting} target="_blank" rel="noopener noreferrer">
+                Meet Link
+              </a>
+            </Box>
+            {props.role === "teacher" && (
+              <Box
+                // display={"flex"}
+                // justifyContent={"center"}
+                mt={5}
+                // mr={1}
+                // ml={1}
+                sx={{ fontWeight: "bold", fontSize: 20 }}
+              >
+                Return Meeting Call: &nbsp;
+                <Link
+                  component="a"
+                  variant="body"
+                  onClick={props.returnMeeting}
+                  sx={{ cursor: "pointer" }}
+                >
+                  Click here
+                </Link>
+              </Box>
+            )}
+          </CardContent>
+        </Card>
       </Box>
     );
   else
     return (
       <div>
-        <Box display={"flex"} justifyContent={"center"} mt={30}>
-          <Button
+        <Box display={"flex"} justifyContent={"center"} mt={15} mx={5}>
+          {/* <Button
             sx={{ fontWeight: "bold", fontSize: 20 }}
             onClick={handleClickOpen}
           >
             Tạo Google Meet mới
-          </Button>
+          </Button> */}
+          <Card sx={{ maxWidth: 1000, border: "none", boxShadow: "none", bgcolor:"transparent" }}>
+            <CardMedia
+              component="img"
+              height="140"
+              image={ImageTransfer}
+              bgcolor="transparent"
+              alt="lettutor to google meet"
+            />
+            <CardContent sx={{ marginTop: "10px" }}>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ margin: "auto", width: "40%" }}
+              >
+                Redirect Meeting
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mt={3} ml={0}>
+                <ul>
+                  <li>
+                    Create <b> new Google Meet room </b> and stop video
+                    activities in this screen.
+                  </li>
+                  <li>
+                    <b>Material</b> and <b>Chat</b> are still able to be used
+                    during the video call delaying.
+                  </li>
+                  <li>
+                    Can be resume video call of this page after redirecting.
+                  </li>
+                </ul>
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                sx={{ fontWeight: "bold", margin: "auto", width: "50%" }}
+                onClick={handleClickOpen}
+              >
+                Create new Google Meet
+              </Button>
+            </CardActions>
+          </Card>
         </Box>
+
         <Dialog
           open={open}
           onClose={handleClose}
@@ -70,18 +219,17 @@ const WhiteboardScreen = (props) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"Chuyển hướng Google Meet"}
+            {"Redirect to Google Meet"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Bạn có chắc muốn chuyển hướng sang trang Google Meet mới? Mọi hoạt
-              động ở trang này sẽ bị tạm ngừng.
+              Are you sure to create new Google Meet link?.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Hủy</Button>
             <Button onClick={handleChangeMeeting} autoFocus>
-              Chuyển hướng
+              Redirect
             </Button>
           </DialogActions>
         </Dialog>

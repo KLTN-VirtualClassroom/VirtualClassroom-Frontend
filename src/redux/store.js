@@ -4,6 +4,8 @@ import accountSlice from "./slices/accountSlice";
 import materialSlice from "./slices/materialSlice";
 import courseSlice from "./slices/courseSlice";
 import topicSlice from "./slices/topicSlice";
+import pdfSlice from "./slices/pdfSlice";
+
 import {baseApi} from "../assets/baseApi.js"
 
 const store = configureStore({
@@ -14,6 +16,7 @@ const store = configureStore({
     material: materialSlice,
     course: courseSlice,
     topic: topicSlice,
+    pdf: pdfSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
