@@ -132,6 +132,12 @@ const Meeting = () => {
     }
     if (pdf.pdfStatus === 0 && redirectLink === null)
       setScreen({ screen: "", linkPdf: "", pdfId: "" });
+    if (role.role !== "teacher") {
+      //console.log(setting.role);
+      setRole((prev) => {
+        return { ...prev, role: "student" };
+      });
+    }
   });
 
   //----------- Socket for first access to room whether the teacher is allow edit pdf
