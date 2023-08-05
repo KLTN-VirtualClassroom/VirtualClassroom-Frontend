@@ -5,14 +5,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import "../Style/PdfScreen.css";
 import { motion as m } from "framer-motion";
+import { useSelector } from "react-redux";
+
 
 import { memo } from "react";
 
 const PDFFile = (props) => {
   //console.log("Link: " + props.linkPdf + " " + props.role);
   const linkPdf = props.linkPdf.replace("undefined", props.role);
-  // console.log("Link2: " + linkPdf);
-
+  //console.log("Link2: " + linkPdf);
+  const linkPdf2 = useSelector(state => state.pdf);
+  console.log(linkPdf2)
 
   return (
     <Box height={"100%"}>

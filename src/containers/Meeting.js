@@ -472,6 +472,7 @@ const Meeting = () => {
           getClickedMaterial={toMaterial}
           getClickedWhiteboard={toWhiteboard}
           getClickedMain={toMain}
+          getClickedClose={toFullVideo}
           userInfo={userInfo}
           screen={screen.screen}
           role={userInfo.role}

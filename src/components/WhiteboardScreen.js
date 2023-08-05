@@ -111,47 +111,71 @@ const WhiteboardScreen = (props) => {
           >
             Tạo Google Meet mới
           </Button> */}
-        <Card sx={{ maxWidth: 600, border: "none", boxShadow: "none", bgcolor: "transparent" }}>
+        <Card
+          sx={{
+            maxWidth: 650,
+            border: "none",
+            boxShadow: "none",
+            bgcolor: "transparent",
+          }}
+        >
           <CardMedia
             component="img"
             height="140"
             image={ImageTransfer}
+            sx={{ maxWidth: "60%", margin: "auto" }}
             alt="lettutor to google meet"
           />
-          <CardContent sx={{marginTop: "10px" }}>
-            <Box
-              // display={"flex"}
-              // justifyContent={"center"}
-              // mt={3}
-              // mr={1}
-              // ml={1}
-              sx={{ fontWeight: "bold", fontSize: 20 }}
-            >
-              Room has been redirected to Google Meet:
-              &nbsp;
-              <a href={linkGgMeeting} target="_blank" rel="noopener noreferrer">
-                Meet Link
-              </a>
-            </Box>
-            {props.role === "teacher" && (
-              <Box
-                // display={"flex"}
-                // justifyContent={"center"}
-                mt={5}
-                // mr={1}
-                // ml={1}
-                sx={{ fontWeight: "bold", fontSize: 20 }}
-              >
-                Return Meeting Call: &nbsp;
-                <Link
-                  component="a"
-                  variant="body"
-                  onClick={props.returnMeeting}
-                  sx={{ cursor: "pointer" }}
+          <CardContent sx={{ marginTop: "10px" }}>
+            {props.role === "teacher" ? (
+              <>
+                <Box sx={{ fontWeight: 500, fontSize: 20 }}>
+                  Room has been redirected to Google Meet: &nbsp;
+                  <Link
+                    component="a"
+                    variant="body"
+                    onClick={() => window.open(linkGgMeeting, "_blank")}
+                    sx={{ cursor: "pointer", textDecoration: "none" }}
+                  >
+                    Click here
+                  </Link>
+                </Box>
+                <Box
+                  // display={"flex"}
+                  // justifyContent={"center"}
+                  mt={5}
+                  // mr={1}
+                  // ml={1}
+                  sx={{ fontWeight: 500, fontSize: 20 }}
                 >
-                  Click here
-                </Link>
-              </Box>
+                  Return Meeting Call: &nbsp;
+                  <Link
+                    component="a"
+                    variant="body"
+                    onClick={props.returnMeeting}
+                    sx={{ cursor: "pointer", textDecoration: "none" }}
+                  >
+                    Click here
+                  </Link>
+                </Box>
+              </>
+            ) : (
+              <>
+                <Box sx={{ fontWeight: 500, fontSize: 20 }}>
+                  Teacher has stopped this video call.
+                </Box>
+                <Box mt={5} sx={{ fontWeight: 500, fontSize: 20 }}>
+                Please redirect to Google Meet through this link: &nbsp;
+                  <Link
+                    component="a"
+                    variant="body"
+                    onClick={() => window.open(linkGgMeeting, "_blank")}
+                    sx={{ cursor: "pointer", textDecoration: "none" }}
+                  >
+                    Click here
+                  </Link>
+                </Box>
+              </>
             )}
           </CardContent>
         </Card>
@@ -167,24 +191,38 @@ const WhiteboardScreen = (props) => {
           >
             Tạo Google Meet mới
           </Button> */}
-          <Card sx={{ maxWidth: 1000, border: "none", boxShadow: "none", bgcolor:"transparent" }}>
+          <Card
+            sx={{
+              maxWidth: 650,
+              border: "none",
+              boxShadow: "none",
+              bgcolor: "transparent",
+            }}
+          >
             <CardMedia
               component="img"
-              height="140"
+              height="130"
               image={ImageTransfer}
               bgcolor="transparent"
+              sx={{ maxWidth: "60%", margin: "auto" }}
               alt="lettutor to google meet"
             />
-            <CardContent sx={{ marginTop: "10px" }}>
+            <CardContent sx={{ marginTop: "10px", marginLeft: "0px" }}>
               <Typography
                 gutterBottom
                 variant="h5"
                 component="div"
-                sx={{ margin: "auto", width: "40%" }}
+                sx={{ margin: "auto", width: "32%" }}
               >
                 Redirect Meeting
               </Typography>
-              <Typography variant="body2" color="text.secondary" mt={3} ml={0}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                mt={3}
+                ml={0}
+                fontSize={18}
+              >
                 <ul>
                   <li>
                     Create <b> new Google Meet room </b> and stop video
@@ -203,7 +241,14 @@ const WhiteboardScreen = (props) => {
             <CardActions>
               <Button
                 color="primary"
-                sx={{ fontWeight: "bold", margin: "auto", width: "50%" }}
+                fontSize="20"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  margin: "auto",
+                  width: "50%",
+                  textTransform: "none",
+                }}
                 onClick={handleClickOpen}
               >
                 Create new Google Meet

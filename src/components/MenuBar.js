@@ -144,23 +144,7 @@ function MenuBar(props) {
             <>
               {props.role === "teacher" ? (
                 <div className="navbar-animate">
-                  {props.screen === "material" ? (
-                    <div className="nav-link" onClick={props.getClickedMain}>
-                      Full Screen Video
-                    </div>
-                  ) : (
-                    <div
-                      className="nav-link"
-                      onClick={props.getClickedMaterial}
-                    >
-                      Material
-                    </div>
-                  )}
-                  {props.screen === "whiteboard" ? (
-                    <div className="nav-link" onClick={props.getClickedMain}>
-                      Full Screen Video
-                    </div>
-                  ) : (
+                  {props.screen === "material" && (
                     <>
                       {props.pdfOpen && (
                         <div
@@ -171,13 +155,41 @@ function MenuBar(props) {
                         </div>
                       )}
 
-                      {/* <div
-                        className="nav-link"
-                        onClick={props.getClickedWhiteboard}
-                      >
-                        Redirect Meeting
-                      </div> */}
+                      <div className="nav-link" onClick={props.getClickedMain}>
+                        Close Material
+                      </div>
                     </>
+                  )}
+                  {props.screen === "whiteboard" && (
+                    <>
+                      {props.pdfOpen ? (
+                        <div
+                          className="nav-link"
+                          onClick={props.getClickedListMaterial}
+                        >
+                          Material
+                        </div>
+                      ) : (
+                        <div
+                          className="nav-link"
+                          onClick={props.getClickedMaterial}
+                        >
+                          Material
+                        </div>
+                      )}
+
+                      <div className="nav-link" onClick={props.getClickedClose}>
+                        Close Redirect
+                      </div>
+                    </>
+                  )}
+                  {props.screen === "" && (
+                    <div
+                      className="nav-link"
+                      onClick={props.getClickedMaterial}
+                    >
+                      Material
+                    </div>
                   )}
                   {props.pdfOpen && (
                     <div className="nav-link">
@@ -429,19 +441,19 @@ function MenuBar(props) {
             //   END MEETING
             // </Button>
             <>
-              {props.role === "teacher" &&
-              <div
-                className="nav-link-end"
-                onClick={props.getClickedWhiteboard}
-              >
-                <img
-                  src={MeetIcon}
-                  height="25"
-                  style={{ cursor: "pointer", marginTop: 5, marginRight: 92 }}
-                  alt="Google Meet"
-                />
-              </div>
-}
+              {props.role === "teacher" && (
+                <div
+                  className="nav-link-end"
+                  onClick={props.getClickedWhiteboard}
+                >
+                  <img
+                    src={MeetIcon}
+                    height="25"
+                    style={{ cursor: "pointer", marginTop: 5, marginRight: 92 }}
+                    alt="Google Meet"
+                  />
+                </div>
+              )}
               <div className="nav-link-end" onClick={openExactEnding}>
                 End Meeting
               </div>
